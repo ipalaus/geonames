@@ -1,0 +1,23 @@
+{
+    "name": "ipalaus/eloquent-geonames",
+    "description": "",
+    "authors": [
+        {
+            "name": "Isern Palaus",
+            "email": "ipalaus@ipalaus.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Ipalaus\\EloquentGeonames\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
