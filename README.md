@@ -33,6 +33,17 @@ $ php artisan geonames:install
 
 This will publish the config file to `app/config/packages/ipalaus/eloquent-geonames/config.php` and run the migrations for you. Ideally, the package should publish the migrations but we will wait until the current pull request laravel/framework#2649  gets merged.
 
+Artisan Commands
+----------------
+
+### Truncate
+
+Do you want to truncate the table and start from scratch? Run:
+
+```bash
+$ php artisan geonames:truncate
+```
+
 GeoNames
 --------
 
