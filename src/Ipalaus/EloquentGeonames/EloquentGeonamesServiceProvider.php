@@ -28,7 +28,24 @@ class EloquentGeonamesServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
+		$this->registerCommands();
+	}
+
+	/**
+	 * Register the auth related console commands.
+	 *
+	 * @return void
+	 */
+	protected function registerCommands()
+	{
+		$app = $this->app;
+
+		$app['command.ipalaus.geonames.install'] = $app->share(function($app)
+		{
+			return new InstallCommand;
+		});
+
+		$this->commands('command.ipalaus.geonames.install');
 	}
 
 	/**
