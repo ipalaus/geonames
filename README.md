@@ -1,6 +1,8 @@
 Eloquent Geonames
 =================
 
+[![Build Status](https://travis-ci.org/ipalaus/eloquent-geonames.png?branch=master)](https://travis-ci.org/ipalaus/eloquent-geonames)
+
 Installation
 ------------
 
