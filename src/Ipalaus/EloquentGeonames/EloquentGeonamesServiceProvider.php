@@ -42,7 +42,7 @@ class EloquentGeonamesServiceProvider extends ServiceProvider {
 
 		$app['command.ipalaus.geonames.install'] = $app->share(function($app)
 		{
-			return new InstallCommand;
+			return new Commands\InstallCommand;
 		});
 
 		$this->commands('command.ipalaus.geonames.install');
