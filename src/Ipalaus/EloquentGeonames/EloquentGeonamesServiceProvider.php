@@ -28,7 +28,25 @@ class EloquentGeonamesServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+		$this->registerRepository();
 		$this->registerCommands();
+	}
+
+	/**
+	 * Register the repository implementation.
+	 *
+	 * @return void
+	 */
+	protected function registerRepository()
+	{
+		$app = $this->app;
+
+		$app['geonames.repository'] = $app->share(function($app)
+		{
+			$connection = $app['db']->connection();
+
+			return new DatabaseRepository($connection);
+		});
 	}
 
 	/**
@@ -40,12 +58,17 @@ class EloquentGeonamesServiceProvider extends ServiceProvider {
 	{
 		$app = $this->app;
 
-		$app['command.ipalaus.geonames.install'] = $app->share(function($app)
+		$app['command.geonames.install'] = $app->share(function($app)
 		{
 			return new Commands\InstallCommand;
 		});
 
-		$this->commands('command.ipalaus.geonames.install');
+		$app['command.geonames.seed'] = $app->share(function($app)
+		{
+			return new Commands\SeedCommand;
+		});
+
+		$this->commands('command.geonames.install', 'command.geonames.seed');
 	}
 
 	/**
