@@ -41,4 +41,11 @@ class TruncateCommandTest extends PHPUnit_Framework_TestCase {
 
 }
 
-class TruncateCommandTestStub extends TruncateCommand {}
+class TruncateCommandTestStub extends TruncateCommand {
+
+	public function line($string)
+	{
+		//
+	}
+
+}
