@@ -2,8 +2,7 @@
 
 use Illuminate\Database\Connection;
 
-class DatabaseRepository
-{
+class DatabaseRepository implements RepositoryInterface {
 
 	/**
 	 * The database connection instance.

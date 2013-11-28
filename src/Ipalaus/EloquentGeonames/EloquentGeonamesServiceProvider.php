@@ -63,12 +63,12 @@ class EloquentGeonamesServiceProvider extends ServiceProvider {
 			return new Commands\InstallCommand;
 		});
 
-		$app['command.geonames.seed'] = $app->share(function($app)
+		$app['command.geonames.truncate'] = $app->share(function($app)
 		{
-			return new Commands\SeedCommand;
+			return new Commands\TruncateCommand($app['geonames.repository']);
 		});
 
-		$this->commands('command.geonames.install', 'command.geonames.seed');
+		$this->commands('command.geonames.install', 'command.geonames.truncate');
 	}
 
 	/**
