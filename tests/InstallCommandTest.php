@@ -14,7 +14,7 @@ class InstallCommandTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @expectedException RuntimeException
 	 */
-	public function testCommandExistingConfigThrowsException()
+	public function testExistingConfigThrowsException()
 	{
 		$command = $this->getMock('InstallCommandTestStub', array('configExists'));
 		$command->expects($this->once())
@@ -24,7 +24,7 @@ class InstallCommandTest extends PHPUnit_Framework_TestCase {
 		$this->runCommand($command);
 	}
 
-	public function testCommandForceEvenConfigExists()
+	public function testForceEvenConfigExists()
 	{
 		$command = $this->getMock('InstallCommandTestStub', array('configExists'));
 		$command->expects($this->once())
