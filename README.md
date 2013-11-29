@@ -1,8 +1,8 @@
 Eloquent Geonames
 =================
 
-[![Build Status](https://travis-ci.org/ipalaus/eloquent-geonames.png?branch=master)](https://travis-ci.org/ipalaus/eloquent-geonames)
-[![Coverage Status](https://coveralls.io/repos/ipalaus/eloquent-geonames/badge.png?branch=master)](https://coveralls.io/r/ipalaus/eloquent-geonames?branch=master)
+[![Build Status](https://travis-ci.org/ipalaus/geonames.png?branch=master)](https://travis-ci.org/ipalaus/geonames)
+[![Coverage Status](https://coveralls.io/repos/ipalaus/geonames/badge.png?branch=master)](https://coveralls.io/r/ipalaus/geonames?branch=master)
 
 Installation
 ------------
@@ -23,7 +23,7 @@ Once you have installed the dependency, you need to register `geonames` in Larav
 `app/config/app.php` and add the next provider to your `providers` array:
 
 ```php
-'Ipalaus\EloquentGeonames\EloquentGeonamesServiceProvider'
+'Ipalaus\Geonames\GeonamesServiceProvider'
 ```
 
 If you run now `php artisan` you should see a new namespace **geonames** with a few commands related to the package. In order to proceed with the install, run the next command:
