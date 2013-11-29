@@ -10,6 +10,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
+        "ext-zip": "*",
         "illuminate/console": "4.0.*",
         "illuminate/database": "4.0.*",
         "illuminate/support": "4.0.*"
