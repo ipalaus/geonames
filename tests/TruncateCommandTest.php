@@ -19,6 +19,14 @@ class TruncateCommandTest extends PHPUnit_Framework_TestCase {
 		$this->runCommand($command);
 	}
 
+	public function testConfirmMethodCall()
+	{
+		$repo = $this->getMock('Ipalaus\EloquentGeonames\RepositoryInterface');
+
+		$method = $this->getMethod('confirmTruncate');
+		$method->invokeArgs(new TruncateCommandTestStub($repo), array());
+	}
+
 	/**
 	 * @expectedException RuntimeException
 	 */
@@ -39,6 +47,13 @@ class TruncateCommandTest extends PHPUnit_Framework_TestCase {
 		return $command->run(new Symfony\Component\Console\Input\ArrayInput($options), new Symfony\Component\Console\Output\NullOutput);
 	}
 
+	protected function getMethod($name) {
+		$class = new ReflectionClass('TruncateCommandTestStub');
+		$method = $class->getMethod($name);
+		$method->setAccessible(true);
+		return $method;
+	}
+
 }
 
 class TruncateCommandTestStub extends TruncateCommand {
@@ -46,6 +61,11 @@ class TruncateCommandTestStub extends TruncateCommand {
 	public function line($string)
 	{
 		//
+	}
+
+	public function confirm($string, $default = true)
+	{
+		return $default;
 	}
 
 }
