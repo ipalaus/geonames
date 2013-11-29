@@ -1,5 +1,6 @@
 <?php
 
+use Mockery as m;
 use Ipalaus\EloquentGeonames\Commands\SeedCommand;
 
 class SeedCommandTest extends PHPUnit_Framework_TestCase {
@@ -9,7 +10,7 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testDevelopmentAndCountryCantBeBothOptions()
 	{
-		$command = new SeedCommandTestStub;
+		$command = new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem'));
 
 		$this->runCommand($command, array('--development' => true, '--country' => 'IP'));
 	}
@@ -19,78 +20,76 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testMustProvideAValidIsoAlpha2Country()
 	{
-		$command = new SeedCommandTestStub;
+		$command = new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem'));
 
 		$this->runCommand($command, array('--country' => 'Isern'));
 	}
 
 	public function testCommandCall()
 	{
-		$command = $this->getMock('SeedCommandTestStub', array('makeDirectory', 'fileExists', 'downloadFile', 'extractZip'));
+		$command = $this->getMock('SeedCommandTestStub', array('fileExists', 'downloadFile', 'extractZip'),
+			array($filesystem = m::mock('Illuminate\Filesystem\Filesystem')));
 
-		$command->expects($this->once())
-			->method('makeDirectory')
-			->will($this->returnValue(true));
+		$filesystem->shouldReceive('makeDirectory')->once()->andReturn(true);
 
-		$command->expects($this->atLeastOnce())
-			->method('fileExists')
-			->will($this->returnCallback(function () {
-				return (bool) rand(0, 1); // this must be improved in a separated test case
-			}));
+		$command->expects($this->atLeastOnce())->method('fileExists')->will($this->returnValue(false));
+		$command->expects($this->atLeastOnce())->method('downloadFile')->will($this->returnValue(null));
+		$command->expects($this->atLeastOnce())->method('extractZip')->will($this->returnCallback(function ($path, $filename) {
+			return str_replace('.zip', '.txt', $filename);
+		}));
 
-		$command->expects($this->atLeastOnce())
-			->method('downloadFile')
-			->will($this->returnValue(null));
+		$this->runCommand($command);
+	}
 
-		$command->expects($this->atLeastOnce())
-			->method('extractZip')
-			->will($this->returnCallback(function ($path, $filename) {
-				return str_replace('.zip', '.txt', $filename);
-			}));
+	public function testCommandAllFilesExistsCall()
+	{
+		$command = $this->getMock('SeedCommandTestStub', array('fileExists'), array($filesystem = m::mock('Illuminate\Filesystem\Filesystem')));
+
+		$filesystem->shouldReceive('makeDirectory')->once()->andReturn(true);
+
+		$command->expects($this->atLeastOnce())->method('fileExists')->will($this->returnValue(true));
 
 		$this->runCommand($command);
 	}
 
 	public function testDevelopmentOptionCall()
 	{
-		$command = $this->getMock('SeedCommandTestStub', array('makeDirectory', 'downloadFile', 'extractZip'));
+		$command = $this->getMock('SeedCommandTestStub', array('downloadFile', 'extractZip'),
+			array($filesystem = m::mock('Illuminate\Filesystem\Filesystem')));
 
-		$command->expects($this->once())
-			->method('makeDirectory')
-			->will($this->returnValue(true));
+		$filesystem->shouldReceive('makeDirectory')->once()->andReturn(true);
 
-		$command->expects($this->atLeastOnce())
-			->method('downloadFile')
-			->will($this->returnValue(null));
-
-		$command->expects($this->atLeastOnce())
-			->method('extractZip')
-			->will($this->returnCallback(function ($path, $filename) {
-				return str_replace('.zip', '.txt', $filename);
-			}));
+		$command->expects($this->atLeastOnce())->method('downloadFile')->will($this->returnValue(null));
+		$command->expects($this->atLeastOnce())->method('extractZip')->will($this->returnCallback(function ($path, $filename) {
+			return str_replace('.zip', '.txt', $filename);
+		}));
 
 		$this->runCommand($command, array('--development' => true));
 	}
 
 	public function testCountryOptionCall()
 	{
-		$command = $this->getMock('SeedCommandTestStub', array('makeDirectory', 'downloadFile', 'extractZip'));
+		$command = $this->getMock('SeedCommandTestStub', array('downloadFile', 'extractZip'),
+			array($filesystem = m::mock('Illuminate\Filesystem\Filesystem')));
 
-		$command->expects($this->once())
-			->method('makeDirectory')
-			->will($this->returnValue(true));
+		$filesystem->shouldReceive('makeDirectory')->once()->andReturn(true);
 
-		$command->expects($this->atLeastOnce())
-			->method('downloadFile')
-			->will($this->returnValue(null));
-
-		$command->expects($this->atLeastOnce())
-			->method('extractZip')
-			->will($this->returnCallback(function ($path, $filename) {
-				return str_replace('.zip', '.txt', $filename);
-			}));
+		$command->expects($this->atLeastOnce())->method('downloadFile')->will($this->returnValue(null));
+		$command->expects($this->atLeastOnce())->method('extractZip')->will($this->returnCallback(function ($path, $filename) {
+			return str_replace('.zip', '.txt', $filename);
+		}));
 
 		$this->runCommand($command, array('--country' => 'IP'));
+	}
+
+	public function testFetchOnlyOptionCall()
+	{
+		$command = $this->getMock('SeedCommandTestStub', array('fileExists'), array($filesystem = m::mock('Illuminate\Filesystem\Filesystem')));
+
+		$filesystem->shouldReceive('makeDirectory')->once()->andReturn(true);
+		$command->expects($this->atLeastOnce())->method('fileExists')->will($this->returnValue(true));
+
+		$this->runCommand($command, array('--fetch-only' => true));
 	}
 
 	public function testExtractZipMethod()
@@ -105,7 +104,7 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 		@unlink(__DIR__ . '/to_zip.txt');
 
 		$method = $this->getMethod('extractZip');
-		$return = $method->invokeArgs(new SeedCommandTestStub, array(__DIR__, 'zipped.zip'));
+		$return = $method->invokeArgs(new SeedCommandTestStub(new Illuminate\Filesystem\Filesystem), array(__DIR__, 'zipped.zip'));
 
 		$this->assertFalse(file_exists(__DIR__ . '/zipped.zip'));
 		$this->assertTrue(file_exists(__DIR__ . '/been_zipped.txt'));
@@ -120,30 +119,7 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 	public function testExtractZipMethodThrowsAnExceptionWhenFileIsInvalid()
 	{
 		$method = $this->getMethod('extractZip');
-		$method->invokeArgs(new SeedCommandTestStub, array(__DIR__, 'fake.zip'));
-	}
-
-	public function testMakeDirectoryMethod()
-	{
-		$dir = __DIR__ . '/test';
-
-		$method = $this->getMethod('makeDirectory');
-		$method->invokeArgs(new SeedCommandTestStub, array($dir));
-
-		$this->assertTrue(is_dir($dir));
-
-		@rmdir($dir);
-	}
-
-	public function testDeleteFileMethod()
-	{
-		$file = __DIR__ . '/delete.txt';
-		file_put_contents($file, 'Isern Palaus');
-
-		$method = $this->getMethod('deleteFile');
-		$method->invokeArgs(new SeedCommandTestStub, array($file));
-
-		$this->assertFalse(file_exists($file));
+		$method->invokeArgs(new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem')), array(__DIR__, 'fake.zip'));
 	}
 
 	public function testFileExistsMethod()
@@ -152,7 +128,7 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 		file_put_contents($file, 'Isern Palaus');
 
 		$method = $this->getMethod('fileExists');
-		$return = $method->invokeArgs(new SeedCommandTestStub, array(__DIR__, 'exists.txt'));
+		$return = $method->invokeArgs(new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem')), array(__DIR__, 'exists.txt'));
 
 		$this->assertTrue($return);
 		@unlink($file);
@@ -164,7 +140,7 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 		file_put_contents($file, 'Isern Palaus');
 
 		$method = $this->getMethod('fileExists');
-		$return = $method->invokeArgs(new SeedCommandTestStub, array(__DIR__, 'exists.zip'));
+		$return = $method->invokeArgs(new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem')), array(__DIR__, 'exists.zip'));
 
 		$this->assertTrue($return);
 		@unlink($file);
@@ -173,7 +149,7 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 	public function testFileExistsMethodReturnFalseWhenNotFound()
 	{
 		$method = $this->getMethod('fileExists');
-		$return = $method->invokeArgs(new SeedCommandTestStub, array(__DIR__, 'random.txt'));
+		$return = $method->invokeArgs(new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem')), array(__DIR__, 'random.txt'));
 
 		$this->assertFalse($return);
 	}

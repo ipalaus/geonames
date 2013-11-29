@@ -4,6 +4,7 @@ use ZipArchive;
 use ErrorException;
 use RuntimeException;
 use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -22,6 +23,13 @@ class SeedCommand extends Command {
 	 * @var string
 	 */
 	protected $description = 'Seed the geonames database with fresh records.';
+
+	/**
+	 * Filesystem implementation.
+	 *
+	 * @var \Illuminate\Filesystem\Filesystem
+	 */
+	protected $filesystem;
 
 	/**
 	 * File archive instance.
@@ -63,10 +71,12 @@ class SeedCommand extends Command {
 	/**
 	 * Create a new console command instance.
 	 *
+	 * @param  \Illuminate\Filesystem\Filesystem
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct(Filesystem $files)
 	{
+		$this->filesystem = $files;
 		$this->archive = new ZipArchive;
 
 		parent::__construct();
@@ -83,8 +93,10 @@ class SeedCommand extends Command {
 		// check if storage/meta/geonames exists. if it does, check if we have all files. If we do, we will just install.
 		// check if geonames_names count = 0, throw an exception if < 0 (más grande, haha)
 
-		$development = $this->input->getOption('development');
 		$country     = $this->input->getOption('country');
+		$development = $this->input->getOption('development');
+		$fetchOnly   = $this->input->getOption('fetch-only');
+		$wipeFiles   = $this->input->getOption('wipe-files');
 
 		// i'm sorry but you can't have both :(
 		if ($development and ! is_null($country)) {
@@ -97,9 +109,16 @@ class SeedCommand extends Command {
 		// set a specific country names
 		$country and $this->setCountry($country);
 
-		// create the directory if it doesn't exists
-		$this->makeDirectory($path = $this->laravel['path.storage'] . '/meta/geonames');
+		// path to download our files
+		$path = $this->laravel['path.storage'] . '/meta/geonames';
 
+		// if we forced to wipe files, we will delete the directory
+		$wipeFiles and $this->filesystem->deleteDirectory($path);
+
+		// create the directory if it doesn't exists
+		$this->filesystem->makeDirectory($path);
+
+		// loop all the files that we need to donwload
 		foreach ($this->getFiles() as $file) {
 			$filename = basename($file);
 
@@ -118,6 +137,13 @@ class SeedCommand extends Command {
 				$this->line("<info>Unzip:</info> $filename");
 				$filename = $this->extractZip($path, $filename);
 			}
+		}
+
+		// if we only want to fetch files, we must stop the execution of the command
+		if ($fetchOnly) {
+			$this->line('<info>Files fetched.</info>');
+
+			return;
 		}
 
 	}
@@ -186,31 +212,9 @@ class SeedCommand extends Command {
 		$this->archive->extractTo($path . '/');
 		$this->archive->close();
 
-		$this->deleteFile($path . '/' . $filename);
+		$this->filesystem->delete($path . '/' . $filename);
 
 		return str_replace('.zip', '.txt', $filename);
-	}
-
-	/**
-	 * Create a directory if it doesn't exists.
-	 *
-	 * @param  string  $path
-	 * @return bool
-	 */
-	protected function makeDirectory($path)
-	{
-		return is_dir($path) ? true : mkdir($path);
-	}
-
-	/**
-	 * Delete the file at a given path.
-	 *
-	 * @param  string  $path
-	 * @return bool
-	 */
-	protected function deleteFile($path)
-	{
-		return @unlink($path);
 	}
 
 	/**
@@ -256,7 +260,7 @@ class SeedCommand extends Command {
 			array('development', null, InputOption::VALUE_NONE, 'Downloads an smaller version of names (~10MB).'),
 			array('fetch-only', null, InputOption::VALUE_NONE, 'Just download the files.'),
 			array('force', 'f', InputOption::VALUE_NONE, 'Forces overwriting the downloaded files.'),
-
+			array('wipe-files', null, InputOption::VALUE_NONE, 'Wipe old downloaded files and fetch new ones.'),
 		);
 	}
 
