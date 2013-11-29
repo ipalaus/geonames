@@ -34,6 +34,29 @@ class DatabaseRepository implements RepositoryInterface {
 	}
 
 	/**
+	 * Checks if a table is empty.
+	 *
+	 * @param  string   $table
+	 * @return boolean
+	 */
+	public function isEmpty($table)
+	{
+		return ($this->getTable($table)->count() === 0);
+	}
+
+	/**
+	 * Insert an array to a given table.
+	 *
+	 * @param  string  $table
+	 * @param  array   $data
+	 * @return void
+	 */
+	public function insert($table, array $data)
+	{
+		$this->getTable($table)->insert($data);
+	}
+
+	/**
 	 * Begin a new database query with the given table.
 	 *
 	 * @return \Illuminate\Database\Query\Builder

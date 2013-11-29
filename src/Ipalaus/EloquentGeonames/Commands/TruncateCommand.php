@@ -23,7 +23,7 @@ class TruncateCommand extends Command {
 	/**
 	 * Repository implementation.
 	 *
-	 * @var Ipalaus\EloquentGeonames\RepositoryInterface
+	 * @var \Ipalaus\EloquentGeonames\RepositoryInterface
 	 */
 	protected $repository;
 

@@ -5,8 +5,10 @@ use ErrorException;
 use RuntimeException;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Ipalaus\EloquentGeonames\Importer;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+
 
 class SeedCommand extends Command {
 
@@ -30,6 +32,13 @@ class SeedCommand extends Command {
 	 * @var \Illuminate\Filesystem\Filesystem
 	 */
 	protected $filesystem;
+
+	/**
+	 * Repository implementation.
+	 *
+	 * @var \Ipalaus\EloquentGeonames\Importer
+	 */
+	protected $importer;
 
 	/**
 	 * File archive instance.
@@ -71,12 +80,14 @@ class SeedCommand extends Command {
 	/**
 	 * Create a new console command instance.
 	 *
-	 * @param  \Illuminate\Filesystem\Filesystem
+	 * @param  \Illuminate\Filesystem\Filesystem   $filesystem
+	 * @param  \Ipalaus\EloquentGeonames\Importer  $importer
 	 * @return void
 	 */
-	public function __construct(Filesystem $files)
+	public function __construct(Filesystem $filesystem, Importer $importer)
 	{
-		$this->filesystem = $files;
+		$this->filesystem = $filesystem;
+		$this->importer = $importer;
 		$this->archive = new ZipArchive;
 
 		parent::__construct();
@@ -89,10 +100,6 @@ class SeedCommand extends Command {
 	 */
 	public function fire()
 	{
-		// just fetch files
-		// check if storage/meta/geonames exists. if it does, check if we have all files. If we do, we will just install.
-		// check if geonames_names count = 0, throw an exception if < 0 (más grande, haha)
-
 		$country     = $this->input->getOption('country');
 		$development = $this->input->getOption('development');
 		$fetchOnly   = $this->input->getOption('fetch-only');
@@ -116,14 +123,16 @@ class SeedCommand extends Command {
 		$wipeFiles and $this->filesystem->deleteDirectory($path);
 
 		// create the directory if it doesn't exists
-		$this->filesystem->makeDirectory($path);
+		if ( ! $this->filesystem->isDirectory($path)) {
+			$this->filesystem->makeDirectory($path);
+		}
 
 		// loop all the files that we need to donwload
 		foreach ($this->getFiles() as $file) {
 			$filename = basename($file);
 
 			if ($this->fileExists($path, $filename)) {
-				$this->line("<info>File exists</info>: $filename");
+				$this->line("<info>File exists:</info> $filename");
 
 				continue;
 			}
@@ -142,10 +151,13 @@ class SeedCommand extends Command {
 		// if we only want to fetch files, we must stop the execution of the command
 		if ($fetchOnly) {
 			$this->line('<info>Files fetched.</info>');
-
 			return;
 		}
 
+		$namesFile = str_replace('.zip', '.txt', basename($this->files['names']));
+
+		$this->importer->names('geonames_names', $path . '/' . $namesFile);
+		$this->importer->countries('geonames_countries', $path . '/countryInfo.txt');
 	}
 
 	/**
