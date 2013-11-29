@@ -2,6 +2,7 @@ Eloquent Geonames
 =================
 
 [![Build Status](https://travis-ci.org/ipalaus/eloquent-geonames.png?branch=master)](https://travis-ci.org/ipalaus/eloquent-geonames)
+[![Coverage Status](https://coveralls.io/repos/ipalaus/eloquent-geonames/badge.png?branch=master)](https://coveralls.io/r/ipalaus/eloquent-geonames?branch=master)
 
 Installation
 ------------
