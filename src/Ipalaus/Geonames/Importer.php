@@ -1,4 +1,4 @@
-<?php namespace Ipalaus\EloquentGeonames;
+<?php namespace Ipalaus\Geonames;
 
 use RuntimeException;
 use Illuminate\Filesystem\Filesystem;
@@ -8,7 +8,7 @@ class Importer {
 	/**
 	 * Repository implementation.
 	 *
-	 * @var \Ipalaus\EloquentGeonames\RepositoryInterface
+	 * @var \Ipalaus\Geonames\RepositoryInterface
 	 */
 	protected $repository;
 
@@ -22,7 +22,7 @@ class Importer {
 	/**
 	 * Create a new instance of Importer.
 	 *
-	 * @param  \Ipalaus\EloquentGeonames\RepositoryInterface  $repository
+	 * @param  \Ipalaus\Geonames\RepositoryInterface  $repository
 	 * @param  \Illuminate\Filesystem\Filesystem              $filesystem
 	 * @return void
 	 */

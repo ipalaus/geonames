@@ -11,7 +11,7 @@
          syntaxCheck="false"
 >
     <testsuites>
-        <testsuite name="Eloquent Geonames Test Suite">
+        <testsuite name="Ipalaus Geonames Test Suite">
             <directory suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>

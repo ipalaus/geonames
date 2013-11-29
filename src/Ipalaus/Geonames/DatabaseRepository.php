@@ -1,4 +1,4 @@
-<?php namespace Ipalaus\EloquentGeonames;
+<?php namespace Ipalaus\Geonames;
 
 use Illuminate\Database\Connection;
 

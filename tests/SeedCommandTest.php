@@ -1,7 +1,7 @@
 <?php
 
 use Mockery as m;
-use Ipalaus\EloquentGeonames\Commands\SeedCommand;
+use Ipalaus\Geonames\Commands\SeedCommand;
 
 class SeedCommandTest extends PHPUnit_Framework_TestCase {
 

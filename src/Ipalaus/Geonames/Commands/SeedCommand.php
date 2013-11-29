@@ -1,11 +1,11 @@
-<?php namespace Ipalaus\EloquentGeonames\Commands;
+<?php namespace Ipalaus\Geonames\Commands;
 
 use ZipArchive;
 use ErrorException;
 use RuntimeException;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Ipalaus\EloquentGeonames\Importer;
+use Ipalaus\Geonames\Importer;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -36,7 +36,7 @@ class SeedCommand extends Command {
 	/**
 	 * Repository implementation.
 	 *
-	 * @var \Ipalaus\EloquentGeonames\Importer
+	 * @var \Ipalaus\Geonames\Importer
 	 */
 	protected $importer;
 
@@ -81,7 +81,7 @@ class SeedCommand extends Command {
 	 * Create a new console command instance.
 	 *
 	 * @param  \Illuminate\Filesystem\Filesystem   $filesystem
-	 * @param  \Ipalaus\EloquentGeonames\Importer  $importer
+	 * @param  \Ipalaus\Geonames\Importer  $importer
 	 * @return void
 	 */
 	public function __construct(Filesystem $filesystem, Importer $importer)

@@ -1,5 +1,5 @@
 {
-    "name": "ipalaus/eloquent-geonames",
+    "name": "ipalaus/geonames",
     "description": "",
     "license": "MIT",
     "authors": [
@@ -25,7 +25,7 @@
             "src/migrations"
         ],
         "psr-0": {
-            "Ipalaus\\EloquentGeonames\\": "src/"
+            "Ipalaus\\Geonames\\": "src/"
         }
     },
     "minimum-stability": "dev"

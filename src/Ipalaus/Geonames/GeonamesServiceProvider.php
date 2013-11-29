@@ -1,8 +1,8 @@
-<?php namespace Ipalaus\EloquentGeonames;
+<?php namespace Ipalaus\Geonames;
 
 use Illuminate\Support\ServiceProvider;
 
-class EloquentGeonamesServiceProvider extends ServiceProvider {
+class GeonamesServiceProvider extends ServiceProvider {
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -18,7 +18,7 @@ class EloquentGeonamesServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('ipalaus/eloquent-geonames');
+		$this->package('ipalaus/geonames');
 	}
 
 	/**

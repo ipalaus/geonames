@@ -1,4 +1,4 @@
-<?php namespace Ipalaus\EloquentGeonames\Commands;
+<?php namespace Ipalaus\Geonames\Commands;
 
 use RuntimeException;
 use Illuminate\Console\Command;
