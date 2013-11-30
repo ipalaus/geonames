@@ -7,7 +7,7 @@ class TruncateCommandTest extends PHPUnit_Framework_TestCase {
 
 	public function testCommandCall()
 	{
-		$repo = $this->getMock('Ipalaus\Geonames\RepositoryInterface', array('truncate'));
+		$repo = $this->getMock('Ipalaus\Geonames\RepositoryInterface');
 		$repo->expects($this->exactly(10))
 			->method('truncate');
 
@@ -32,7 +32,7 @@ class TruncateCommandTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testExistingConfigThrowsException()
 	{
-		$repo = $this->getMock('Ipalaus\Geonames\RepositoryInterface', array('truncate'));
+		$repo = $this->getMock('Ipalaus\Geonames\RepositoryInterface');
 
 		$command = $this->getMock('TruncateCommandTestStub', array('confirmTruncate'), array($repo));
 		$command->expects($this->once())
