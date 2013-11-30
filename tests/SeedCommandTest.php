@@ -1,6 +1,7 @@
 <?php
 
 use Mockery as m;
+use Ipalaus\Geonames\Importer;
 use Ipalaus\Geonames\Commands\SeedCommand;
 
 class SeedCommandTest extends PHPUnit_Framework_TestCase {
@@ -10,8 +11,7 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testDevelopmentAndCountryCantBeBothOptions()
 	{
-		$command = new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem'));
-
+		$command = new SeedCommandTestStub($filesystem = $this->getFiles(), new Importer($this->getRepo(), $filesystem));
 		$this->runCommand($command, array('--development' => true, '--country' => 'IP'));
 	}
 
@@ -20,16 +20,24 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testMustProvideAValidIsoAlpha2Country()
 	{
-		$command = new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem'));
-
+		$command = new SeedCommandTestStub($filesystem = $this->getFiles(), new Importer($this->getRepo(), $filesystem));
 		$this->runCommand($command, array('--country' => 'Isern'));
 	}
 
 	public function testCommandCall()
 	{
-		$command = $this->getMock('SeedCommandTestStub', array('fileExists', 'downloadFile', 'extractZip'),
-			array($filesystem = m::mock('Illuminate\Filesystem\Filesystem')));
+		$repo = $this->getRepo();
+		$repo->shouldReceive('isEmpty')->once()->andReturn(true);
+		$repo->shouldReceive('insert')->andReturn(null);
 
+		$filesystem = $this->getFiles();
+		$filesystem->shouldReceive('get')->once()->andReturn(file_get_contents(__DIR__ . '/fixtures/names.txt'));
+
+		$importer = new Importer($repo, $filesystem);
+
+		$command = $this->getMock('SeedCommandTestStub', array('fileExists', 'downloadFile', 'extractZip'), array($filesystem, $importer));
+
+		$filesystem->shouldReceive('isDirectory')->once()->andReturn(false);
 		$filesystem->shouldReceive('makeDirectory')->once()->andReturn(true);
 
 		$command->expects($this->atLeastOnce())->method('fileExists')->will($this->returnValue(false));
@@ -43,8 +51,18 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 
 	public function testCommandAllFilesExistsCall()
 	{
-		$command = $this->getMock('SeedCommandTestStub', array('fileExists'), array($filesystem = m::mock('Illuminate\Filesystem\Filesystem')));
+		$repo = $this->getRepo();
+		$repo->shouldReceive('isEmpty')->once()->andReturn(true);
+		$repo->shouldReceive('insert')->andReturn(null);
 
+		$filesystem = $this->getFiles();
+		$filesystem->shouldReceive('get')->once()->andReturn(file_get_contents(__DIR__ . '/fixtures/names.txt'));
+
+		$importer = new Importer($repo, $filesystem);
+
+		$command = $this->getMock('SeedCommandTestStub', array('fileExists', 'downloadFile', 'extractZip'), array($filesystem, $importer));
+
+		$filesystem->shouldReceive('isDirectory')->once()->andReturn(false);
 		$filesystem->shouldReceive('makeDirectory')->once()->andReturn(true);
 
 		$command->expects($this->atLeastOnce())->method('fileExists')->will($this->returnValue(true));
@@ -119,7 +137,7 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 	public function testExtractZipMethodThrowsAnExceptionWhenFileIsInvalid()
 	{
 		$method = $this->getMethod('extractZip');
-		$method->invokeArgs(new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem')), array(__DIR__, 'fake.zip'));
+		$method->invokeArgs(new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem'), new Importer), array(__DIR__, 'fake.zip'));
 	}
 
 	public function testFileExistsMethod()
@@ -128,7 +146,7 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 		file_put_contents($file, 'Isern Palaus');
 
 		$method = $this->getMethod('fileExists');
-		$return = $method->invokeArgs(new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem')), array(__DIR__, 'exists.txt'));
+		$return = $method->invokeArgs(new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem'), new Importer), array(__DIR__, 'exists.txt'));
 
 		$this->assertTrue($return);
 		@unlink($file);
@@ -140,7 +158,7 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 		file_put_contents($file, 'Isern Palaus');
 
 		$method = $this->getMethod('fileExists');
-		$return = $method->invokeArgs(new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem')), array(__DIR__, 'exists.zip'));
+		$return = $method->invokeArgs(new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem'), new Importer), array(__DIR__, 'exists.zip'));
 
 		$this->assertTrue($return);
 		@unlink($file);
@@ -149,7 +167,7 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 	public function testFileExistsMethodReturnFalseWhenNotFound()
 	{
 		$method = $this->getMethod('fileExists');
-		$return = $method->invokeArgs(new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem')), array(__DIR__, 'random.txt'));
+		$return = $method->invokeArgs(new SeedCommandTestStub($filesystem = m::mock('Illuminate\Filesystem\Filesystem'), new Importer), array(__DIR__, 'random.txt'));
 
 		$this->assertFalse($return);
 	}
@@ -164,6 +182,16 @@ class SeedCommandTest extends PHPUnit_Framework_TestCase {
 		$method = $class->getMethod($name);
 		$method->setAccessible(true);
 		return $method;
+	}
+
+	protected function getFiles()
+	{
+		return m::mock('Illuminate\Filesystem\Filesystem');
+	}
+
+	protected function getRepo()
+	{
+		return m::mock('Ipalaus\Geonames\RepositoryInterface');
 	}
 
 }
