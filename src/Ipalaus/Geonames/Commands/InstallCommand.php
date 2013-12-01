@@ -30,7 +30,7 @@ class InstallCommand extends Command {
 	{
 		$force = $this->input->getOption('force');
 
-		$path = $this->laravel['path.base'].'/app/config/packages/ipalaus/eloquent-geonames/config.php';
+		$path = $this->laravel['path.base'].'/app/config/packages/ipalaus/geonames/config.php';
 
 		// prevents config overwrites
 		if ($this->configExists($path) and ! $force)
@@ -38,13 +38,13 @@ class InstallCommand extends Command {
 			throw new RuntimeException('Config file exists. Use --force if you want to ignore this error and overwrite it.');
 		}
 
-		$this->call('config:publish', array('package' => 'ipalaus/eloquent-geonames'));
+		$this->call('config:publish', array('package' => 'ipalaus/geonames'));
 
 		// The ideal idea here is to publish the migrations. A 'migrate:publish'
 		// doesn't exists right now but a feature request was accepted and a
 		// pull request was already opened. So, for now, we will just migrate.
 		// Further info: https://github.com/laravel/framework/pull/2649
-		$this->call('migrate', array('--package' => 'ipalaus/eloquent-geonames'));
+		$this->call('migrate', array('--package' => 'ipalaus/geonames'));
 	}
 
 	/**
