@@ -113,6 +113,158 @@ class Importer {
 	}
 
 	/**
+	 * Parse the language codes file and inserts it to the database.
+	 *
+	 * @param  string  $table
+	 * @param  string  $path
+	 * @return void
+	 */
+	public function languageCodes($table, $path)
+	{
+		$this->isEmpty($table);
+
+		$rows = $this->parseFile($path);
+
+		foreach ($rows as $row) {
+			$insert = array(
+				'iso_639_3'     => $row[0],
+				'iso_639_2'     => $row[1],
+				'iso_639_1'     => $row[2],
+				'language_name' => $row[3],
+			);
+
+			$this->repository->insert($table, $insert);
+		}
+	}
+
+	/**
+	 * Parse the admin divisions and subdivisions file and inserts it to the
+	 * database.
+	 *
+	 * @param  string  $table
+	 * @param  string  $path
+	 * @return void
+	 */
+	public function adminDivions($table, $path)
+	{
+		$this->isEmpty($table);
+
+		$rows = $this->parseFile($path);
+
+		foreach ($rows as $row) {
+			$insert = array(
+				'code'       => $row[0],
+				'name'       => $row[1],
+				'name_ascii' => $row[2],
+				'name_id'    => $row[3],
+			);
+
+			$this->repository->insert($table, $insert);
+		}
+	}
+
+	/**
+	 * Parse the hierachies file and inserts it to the database.
+	 *
+	 * @param  string  $table
+	 * @param  string  $path
+	 * @return void
+	 */
+	public function hierarchies($table, $path)
+	{
+		$this->isEmpty($table);
+
+		$rows = $this->parseFile($path);
+
+		foreach ($rows as $row) {
+			$insert = array(
+				'parent_id' => $row[0],
+				'child_id'  => $row[1],
+				'type'      => $row[2],
+			);
+
+			$this->repository->insert($table, $insert);
+		}
+	}
+
+	/**
+	 * Parse the features file and inserts it to the database.
+	 *
+	 * @param  string  $table
+	 * @param  string  $path
+	 * @return void
+	 */
+	public function features($table, $path)
+	{
+		$this->isEmpty($table);
+
+		$rows = $this->parseFile($path);
+
+		foreach ($rows as $row) {
+			$insert = array(
+				'code'        => $row[0],
+				'name'        => $row[1],
+				'description' => $row[2],
+			);
+
+			$this->repository->insert($table, $insert);
+		}
+	}
+
+	/**
+	 * Parse the timezones file and inserts it to the database.
+	 *
+	 * @param  string  $table
+	 * @param  string  $path
+	 * @return void
+	 */
+	public function timezones($table, $path)
+	{
+		$this->isEmpty($table);
+
+		$rows = $this->parseFile($path);
+
+		foreach ($rows as $row) {
+			$insert = array(
+				'id'         => $row[0],
+				'gmt_offset' => $row[1],
+				'dst_offset' => $row[2],
+			);
+
+			$this->repository->insert($table, $insert);
+		}
+	}
+
+	/**
+	 * Parse the alternate names file and inserts it to the database.
+	 *
+	 * @param  string  $table
+	 * @param  string  $path
+	 * @return void
+	 */
+	public function alternateNames($table, $path)
+	{
+		$this->isEmpty($table);
+
+		$rows = $this->parseFile($path);
+
+		foreach ($rows as $row) {
+			$insert = array(
+				'id'             => $row[1],
+				'name_id'        => $row[2],
+				'iso_language'   => $row[3],
+				'alternate_name' => $row[4],
+				'is_preferred'   => $row[5],
+				'is_short'       => $row[6],
+				'is_colloquial'  => $row[7],
+				'is_historic'    => $row[8],
+			);
+
+			$this->repository->insert($table, $insert);
+		}
+	}
+
+	/**
 	 * Prevent wrong executons of the importer.
 	 *
 	 * @param  string   $table

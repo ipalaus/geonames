@@ -28,6 +28,8 @@ class GeonamesServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+		$this->app['config']->package('ipalaus/geonames', __DIR__ . '/../../config');
+
 		$this->registerRepository();
 		$this->registerCommands();
 	}
@@ -65,7 +67,9 @@ class GeonamesServiceProvider extends ServiceProvider {
 
 		$app['command.geonames.seed'] = $app->share(function($app)
 		{
-			return new Commands\SeedCommand($app['files'], new Importer($app['geonames.repository'], $app['files']));
+			$config = $app['config']->get('geonames::seed', array());
+
+			return new Commands\SeedCommand(new Importer($app['geonames.repository'], $app['files']), $app['files'], $config);
 		});
 
 		$app['command.geonames.truncate'] = $app->share(function($app)

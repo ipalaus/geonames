@@ -27,18 +27,18 @@ class SeedCommand extends Command {
 	protected $description = 'Seed the geonames database with fresh records.';
 
 	/**
+	 * Importer instance.
+	 *
+	 * @var \Ipalaus\Geonames\Importer
+	 */
+	protected $importer;
+
+	/**
 	 * Filesystem implementation.
 	 *
 	 * @var \Illuminate\Filesystem\Filesystem
 	 */
 	protected $filesystem;
-
-	/**
-	 * Repository implementation.
-	 *
-	 * @var \Ipalaus\Geonames\Importer
-	 */
-	protected $importer;
 
 	/**
 	 * File archive instance.
@@ -48,46 +48,25 @@ class SeedCommand extends Command {
 	protected $archive;
 
 	/**
-	 * GeoNames files to download.
+	 * Configuration options.
 	 *
 	 * @var array
 	 */
-	protected $files = array(
-		'names'     => 'http://download.geonames.org/export/dump/allCountries.zip',
-		'alternate' => 'http://download.geonames.org/export/dump/alternateNames.zip',
-		'hierarchy' => 'http://download.geonames.org/export/dump/hierarchy.zip',
-		'admin1'    => 'http://download.geonames.org/export/dump/admin1CodesASCII.txt',
-		'admin2'    => 'http://download.geonames.org/export/dump/admin2Codes.txt',
-		'feature'   => 'http://download.geonames.org/export/dump/featureCodes_en.txt',
-		'timezones' => 'http://download.geonames.org/export/dump/timeZones.txt',
-		'countries' => 'http://download.geonames.org/export/dump/countryInfo.txt',
-	);
-
-	/**
-	 * GeoName file for development: all cities with population > 15000 or capitals.
-	 *
-	 * @var string
-	 */
-	protected $development = 'http://download.geonames.org/export/dump/cities15000.zip';
-
-	/**
-	 * GeoName file wildcard for a concrete country.
-	 *
-	 * @var string
-	 */
-	protected $countryWildcard = 'http://download.geonames.org/export/dump/%s.zip';
+	protected $config = array();
 
 	/**
 	 * Create a new console command instance.
 	 *
-	 * @param  \Illuminate\Filesystem\Filesystem   $filesystem
-	 * @param  \Ipalaus\Geonames\Importer  $importer
+	 * @param  \Ipalaus\Geonames\Importer         $importer
+	 * @param  \Illuminate\Filesystem\Filesystem  $filesystem
 	 * @return void
 	 */
-	public function __construct(Filesystem $filesystem, Importer $importer)
+	public function __construct(Importer $importer, Filesystem $filesystem, array $config)
 	{
-		$this->filesystem = $filesystem;
 		$this->importer = $importer;
+		$this->filesystem = $filesystem;
+		$this->config = $config;
+
 		$this->archive = new ZipArchive;
 
 		parent::__construct();
@@ -117,7 +96,7 @@ class SeedCommand extends Command {
 		$country and $this->setCountry($country);
 
 		// path to download our files
-		$path = $this->laravel['path.storage'] . '/meta/geonames';
+		$path = $this->getPath();
 
 		// if we forced to wipe files, we will delete the directory
 		$wipeFiles and $this->filesystem->deleteDirectory($path);
@@ -127,8 +106,10 @@ class SeedCommand extends Command {
 			$this->filesystem->makeDirectory($path);
 		}
 
+		$files = $this->getFiles();
+
 		// loop all the files that we need to donwload
-		foreach ($this->getFiles() as $file) {
+		foreach ($files as $file) {
 			$filename = basename($file);
 
 			if ($this->fileExists($path, $filename)) {
@@ -154,10 +135,29 @@ class SeedCommand extends Command {
 			return;
 		}
 
-		$namesFile = str_replace('.zip', '.txt', basename($this->files['names']));
+		// we need this because the name file can be a country, the development one or the original one
+		$namesFile = str_replace('.zip', '.txt', basename($this->config['files']['names']));
 
-		$this->importer->names('geonames_names', $path . '/' . $namesFile);
-		$this->importer->countries('geonames_countries', $path . '/countryInfo.txt');
+		$toImport = array(
+			array('function' => 'names',         'table' => 'geonames_names',              'file' => $path . '/' . $namesFile,),
+			array('function' => 'countries',     'table' => 'geonames_countries',          'file' => $path . '/countryInfo.txt',),
+			array('function' => 'languageCodes', 'table' => 'geonames_language_codes',     'file' => $path . '/iso-languagecodes.txt',),
+			array('function' => 'adminDivions',  'table' => 'geonames_admin_divisions',    'file' => $path . '/admin1CodesASCII.txt',),
+			array('function' => 'adminDivions',  'table' => 'geonames_admin_subdivisions', 'file' => $path . '/admin2Codes.txt',),
+			array('function' => 'hierarchies',   'table' => 'geonames_hierarchies',        'file' => $path . '/hierarchy.txt',),
+			array('function' => 'features',      'table' => 'geonames_features',           'file' => $path . '/featureCodes_en.txt',),
+			array('function' => 'timezones',     'table' => 'geonames_timezones',          'file' => $path . '/timeZones.txt',),
+		);
+
+		foreach ($toImport as $import) {
+			$this->importer->{$import['function']}($import['table'], $import['file']);
+			$this->line("<info>Seeded:</info> {$import['table']}");
+		}
+
+		// we will only have al alternate names file if we didn't ran a development option
+		if ( ! $development) {
+			$this->importer->alternateNames('geonames_alternate_names', $path . '/alternateNames.txt');
+		}
 	}
 
 	/**
@@ -168,9 +168,9 @@ class SeedCommand extends Command {
 	 */
 	protected function setDevelopment()
 	{
-		$this->files['names'] = $this->development;
+		$this->config['files']['names'] = $this->config['development'];
 
-		unset($this->files['alternate']);
+		unset($this->config['files']['alternate']);
 	}
 
 	/**
@@ -185,7 +185,7 @@ class SeedCommand extends Command {
 			throw new RuntimeException('Country format must be in ISO Alpha 2 code.');
 		}
 
-		$this->files['names'] = sprintf($this->countryWildcard, strtoupper($country));
+		$this->files['names'] = sprintf($this->config['country_wildcard'], strtoupper($country));
 	}
 
 	/**
@@ -250,6 +250,11 @@ class SeedCommand extends Command {
 		return false;
 	}
 
+	protected function getPath()
+	{
+		return $this->config['path'];
+	}
+
 	/**
 	 * Get the files to download.
 	 *
@@ -257,7 +262,7 @@ class SeedCommand extends Command {
 	 */
 	protected function getFiles()
 	{
-		return $this->files;
+		return $this->config['files'];
 	}
 
 	/**

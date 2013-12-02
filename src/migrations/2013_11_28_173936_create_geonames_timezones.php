@@ -14,11 +14,9 @@ class CreateGeonamesTimezones extends Migration {
 	{
 		Schema::create('geonames_timezones', function(Blueprint $table)
 		{
-			$table->string('id', 200);
+			$table->string('id', 200)->index();
 			$table->decimal('gmt_offset', 3, 1);
 			$table->decimal('dst_offset', 3, 1);
-
-			$table->primary('id');
 		});
 	}
 

@@ -17,7 +17,6 @@ class CreateGeonamesHierarchies extends Migration {
 			$table->integer('parent_id')->index();
 			$table->integer('child_id')->index();
 			$table->string('type')->index();
-			$table->timestamps();
 		});
 	}
 

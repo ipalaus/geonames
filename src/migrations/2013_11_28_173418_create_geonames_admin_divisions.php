@@ -14,13 +14,10 @@ class CreateGeonamesAdminDivisions extends Migration {
 	{
 		Schema::create('geonames_admin_divisions', function(Blueprint $table)
 		{
-			$table->string('code', 6);
+			$table->string('code', 6)->inex();
 			$table->text('name');
 			$table->text('name_ascii');
 			$table->integer('name_id')->index();
-			$table->timestamps();
-
-			$table->primary('code');
 		});
 	}
 
