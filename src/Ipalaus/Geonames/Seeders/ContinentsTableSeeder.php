@@ -1,6 +1,6 @@
 <?php namespace Ipalaus\Geonames\Seeders;
 
-class NamesTableSeeder extends DatabaseSeeder {
+class ContinentsTableSeeder extends DatabaseSeeder {
 
 	/**
 	 * Run the database seeds.

@@ -122,27 +122,11 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		foreach ($continents as $continent) {
+		foreach ($continents as $row) {
 			$insert = array(
-				'iso_alpha2'           => $row[0],
-				'iso_alpha3'           => $row[1],
-				'iso_numeric'          => $row[2],
-				'fips_code'            => $row[3],
-				'name'                 => $row[4],
-				'capital'              => $row[5],
-				'area'                 => $row[6],
-				'population'           => $row[7],
-				'continent'            => $row[8],
-				'tld'                  => $row[9],
-				'currency'             => $row[10],
-				'currency_name'        => $row[11],
-				'phone'                => $row[12],
-				'postal_code_format'   => $row[13],
-				'postal_code_regex'    => $row[14],
-				'name_id'              => $row[15],
-				'languages'            => $row[16],
-				'neighbours'           => $row[17],
-				'equivalent_fips_code' => $row[18],
+				'code'    => $row[0],
+				'name'    => $row[1],
+				'name_id' => $row[2],
 			);
 
 			$this->repository->insert($table, $insert);
