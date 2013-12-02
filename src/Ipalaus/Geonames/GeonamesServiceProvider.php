@@ -65,11 +65,11 @@ class GeonamesServiceProvider extends ServiceProvider {
 			return new Commands\InstallCommand;
 		});
 
-		$app['command.geonames.seed'] = $app->share(function($app)
+		$app['command.geonames.import'] = $app->share(function($app)
 		{
-			$config = $app['config']->get('geonames::seed', array());
+			$config = $app['config']->get('geonames::import', array());
 
-			return new Commands\SeedCommand(new Importer($app['geonames.repository'], $app['files']), $app['files'], $config);
+			return new Commands\ImportCommand(new Importer($app['geonames.repository'], $app['files']), $app['files'], $config);
 		});
 
 		$app['command.geonames.truncate'] = $app->share(function($app)
@@ -77,7 +77,7 @@ class GeonamesServiceProvider extends ServiceProvider {
 			return new Commands\TruncateCommand($app['geonames.repository']);
 		});
 
-		$this->commands('command.geonames.install', 'command.geonames.seed', 'command.geonames.truncate');
+		$this->commands('command.geonames.install', 'command.geonames.import', 'command.geonames.truncate');
 	}
 
 	/**

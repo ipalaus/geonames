@@ -10,21 +10,21 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
 
-class SeedCommand extends Command {
+class ImportCommand extends Command {
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'geonames:seed';
+	protected $name = 'geonames:import';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Seed the geonames database with fresh records.';
+	protected $description = 'Import and seed the geonames database with fresh records.';
 
 	/**
 	 * Importer instance.
