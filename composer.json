@@ -15,7 +15,8 @@
         "illuminate/console": "4.0.*",
         "illuminate/database": "4.0.*",
         "illuminate/filesystem": "4.0.*",
-        "illuminate/support": "4.0.*"
+        "illuminate/support": "4.0.*",
+        "symfony/process": "2.3.*"
     },
     "require-dev": {
         "mockery/mockery": "0.8.0",
@@ -23,7 +24,8 @@
     },
     "autoload": {
         "classmap": [
-            "src/migrations"
+            "src/migrations",
+            "src/seeders"
         ],
         "psr-0": {
             "Ipalaus\\Geonames\\": "src/"

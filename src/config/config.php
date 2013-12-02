@@ -2,7 +2,7 @@
 
 return array(
 
-	'seed' => array(
+	'import' => array(
 
 		'path' => storage_path() . '/meta/geonames',
 

@@ -3,9 +3,10 @@
 use ZipArchive;
 use ErrorException;
 use RuntimeException;
+use Ipalaus\Geonames\Importer;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Ipalaus\Geonames\Importer;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -135,29 +136,51 @@ class ImportCommand extends Command {
 			return;
 		}
 
-		// we need this because the name file can be a country, the development one or the original one
-		$namesFile = str_replace('.zip', '.txt', basename($this->config['files']['names']));
+		$this->line("<info>It is time to seed the database. This may take 'a while'...</info>");
 
-		$toImport = array(
-			array('function' => 'names',         'table' => 'geonames_names',              'file' => $path . '/' . $namesFile,),
-			array('function' => 'countries',     'table' => 'geonames_countries',          'file' => $path . '/countryInfo.txt',),
-			array('function' => 'languageCodes', 'table' => 'geonames_language_codes',     'file' => $path . '/iso-languagecodes.txt',),
-			array('function' => 'adminDivions',  'table' => 'geonames_admin_divisions',    'file' => $path . '/admin1CodesASCII.txt',),
-			array('function' => 'adminDivions',  'table' => 'geonames_admin_subdivisions', 'file' => $path . '/admin2Codes.txt',),
-			array('function' => 'hierarchies',   'table' => 'geonames_hierarchies',        'file' => $path . '/hierarchy.txt',),
-			array('function' => 'features',      'table' => 'geonames_features',           'file' => $path . '/featureCodes_en.txt',),
-			array('function' => 'timezones',     'table' => 'geonames_timezones',          'file' => $path . '/timeZones.txt',),
-		);
+		// finally seed the common seeders
+		$this->seedCommand('ContinentsTableSeeder');
+		$this->seedCommand('CountriesTableSeeder');
+		$this->seedCommand('AdminDivionsTableSeeder');
+		$this->seedCommand('AdminSubdivionsTableSeeder');
+		$this->seedCommand('HierarchiesTableSeeder');
+		$this->seedCommand('FeaturesTableSeeder');
+		$this->seedCommand('TimezonesTableSeeder');
 
-		foreach ($toImport as $import) {
-			$this->importer->{$import['function']}($import['table'], $import['file']);
-			$this->line("<info>Seeded:</info> {$import['table']}");
+		// depending if we run a country, development or plain names we will run
+		// different seeders. Note that the langauge codes file is only
+		// available with the allCountries.zip file.
+		if ($development) {
+			$this->seedCommand('DevelopmentNamesTableSeeder');
+		} elseif ($country) {
+			$this->seedCommand('CountriesNamesTableSeeder', '--country=' . $country);
+		} else {
+			$this->seedCommand('NamesTableSeeder');
+			$this->seedCommand('LanguageCodesTableSeeder');
+		}
+	}
+
+	/**
+	 * Run a seed coman in a separate process.
+	 *
+	 * @param  string  $class
+	 * @return void
+	 */
+	protected function seedCommand($class)
+	{
+		$string = 'php artisan geonames:seed --class="Ipalaus\Geonames\Seeders\%s" --path="%s"';
+
+		$command = sprintf($string, $class, $this->getPath());
+
+		$process = new Process($command, $this->laravel['path.base'], null, null, 600);
+		$process->run();
+
+		// executes after the command finishes
+		if (!$process->isSuccessful()) {
+			throw new \RuntimeException($process->getErrorOutput());
 		}
 
-		// we will only have al alternate names file if we didn't ran a development option
-		if ( ! $development) {
-			$this->importer->alternateNames('geonames_alternate_names', $path . '/alternateNames.txt');
-		}
+		$this->line("<info>Seeded:</info> $class");
 	}
 
 	/**

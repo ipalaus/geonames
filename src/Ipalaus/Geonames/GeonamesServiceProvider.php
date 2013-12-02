@@ -49,6 +49,11 @@ class GeonamesServiceProvider extends ServiceProvider {
 
 			return new DatabaseRepository($connection);
 		});
+
+		$app->bind('Ipalaus\Geonames\RepositoryInterface', function($app)
+		{
+			return $app['geonames.repository'];
+		});
 	}
 
 	/**
@@ -72,12 +77,17 @@ class GeonamesServiceProvider extends ServiceProvider {
 			return new Commands\ImportCommand(new Importer($app['geonames.repository'], $app['files']), $app['files'], $config);
 		});
 
+		$app['command.geonames.seed'] = $app->share(function($app)
+		{
+			return new Commands\SeedCommand($app['db']);
+		});
+
 		$app['command.geonames.truncate'] = $app->share(function($app)
 		{
 			return new Commands\TruncateCommand($app['geonames.repository']);
 		});
 
-		$this->commands('command.geonames.install', 'command.geonames.import', 'command.geonames.truncate');
+		$this->commands('command.geonames.install', 'command.geonames.import', 'command.geonames.seed', 'command.geonames.truncate');
 	}
 
 	/**

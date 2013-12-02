@@ -1,5 +1,6 @@
 <?php namespace Ipalaus\Geonames;
 
+use Clousure;
 use RuntimeException;
 use Illuminate\Filesystem\Filesystem;
 
@@ -43,9 +44,8 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$rows = $this->parseFile($path);
-
-		foreach ($rows as $row) {
+		$this->parseFile($path, function($row) use ($table)
+		{
 			$insert = array(
 				'id'              => $row[0],
 				'name'            => $row[1],
@@ -69,7 +69,7 @@ class Importer {
 			);
 
 			$this->repository->insert($table, $insert);
-		}
+		});
 	}
 
 	/**
@@ -83,9 +83,46 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$rows = $this->parseFile($path);
+		$this->parseFile($path, function($row) use ($table)
+		{
+			$insert = array(
+				'iso_alpha2'           => $row[0],
+				'iso_alpha3'           => $row[1],
+				'iso_numeric'          => $row[2],
+				'fips_code'            => $row[3],
+				'name'                 => $row[4],
+				'capital'              => $row[5],
+				'area'                 => $row[6],
+				'population'           => $row[7],
+				'continent'            => $row[8],
+				'tld'                  => $row[9],
+				'currency'             => $row[10],
+				'currency_name'        => $row[11],
+				'phone'                => $row[12],
+				'postal_code_format'   => $row[13],
+				'postal_code_regex'    => $row[14],
+				'name_id'              => $row[15],
+				'languages'            => $row[16],
+				'neighbours'           => $row[17],
+				'equivalent_fips_code' => $row[18],
+			);
 
-		foreach ($rows as $row) {
+			$this->repository->insert($table, $insert);
+		});
+	}
+
+	/**
+	 * Inserts the continents to the database.
+	 *
+	 * @param  string  $table
+	 * @param  array   $continents
+	 * @return void
+	 */
+	public function continents($table, $continents)
+	{
+		$this->isEmpty($table);
+
+		foreach ($continents as $continent) {
 			$insert = array(
 				'iso_alpha2'           => $row[0],
 				'iso_alpha3'           => $row[1],
@@ -123,9 +160,8 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$rows = $this->parseFile($path);
-
-		foreach ($rows as $row) {
+		$this->parseFile($path, function($row) use ($table)
+		{
 			$insert = array(
 				'iso_639_3'     => $row[0],
 				'iso_639_2'     => $row[1],
@@ -134,7 +170,7 @@ class Importer {
 			);
 
 			$this->repository->insert($table, $insert);
-		}
+		});
 	}
 
 	/**
@@ -149,9 +185,8 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$rows = $this->parseFile($path);
-
-		foreach ($rows as $row) {
+		$this->parseFile($path, function($row) use ($table)
+		{
 			$insert = array(
 				'code'       => $row[0],
 				'name'       => $row[1],
@@ -160,7 +195,7 @@ class Importer {
 			);
 
 			$this->repository->insert($table, $insert);
-		}
+		});
 	}
 
 	/**
@@ -174,9 +209,8 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$rows = $this->parseFile($path);
-
-		foreach ($rows as $row) {
+		$this->parseFile($path, function($row) use ($table)
+		{
 			$insert = array(
 				'parent_id' => $row[0],
 				'child_id'  => $row[1],
@@ -184,7 +218,7 @@ class Importer {
 			);
 
 			$this->repository->insert($table, $insert);
-		}
+		});
 	}
 
 	/**
@@ -198,9 +232,8 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$rows = $this->parseFile($path);
-
-		foreach ($rows as $row) {
+		$this->parseFile($path, function($row) use ($table)
+		{
 			$insert = array(
 				'code'        => $row[0],
 				'name'        => $row[1],
@@ -208,7 +241,7 @@ class Importer {
 			);
 
 			$this->repository->insert($table, $insert);
-		}
+		});
 	}
 
 	/**
@@ -222,9 +255,8 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$rows = $this->parseFile($path);
-
-		foreach ($rows as $row) {
+		$this->parseFile($path, function($row) use ($table)
+		{
 			$insert = array(
 				'id'         => $row[0],
 				'gmt_offset' => $row[1],
@@ -232,7 +264,7 @@ class Importer {
 			);
 
 			$this->repository->insert($table, $insert);
-		}
+		});
 	}
 
 	/**
@@ -246,9 +278,8 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$rows = $this->parseFile($path);
-
-		foreach ($rows as $row) {
+		$this->parseFile($path, function($row) use ($table)
+		{
 			$insert = array(
 				'id'             => $row[1],
 				'name_id'        => $row[2],
@@ -261,7 +292,7 @@ class Importer {
 			);
 
 			$this->repository->insert($table, $insert);
-		}
+		});
 	}
 
 	/**
@@ -280,23 +311,33 @@ class Importer {
 	/**
 	 * Parse a given file and return the CSV lines as an array.
 	 *
-	 * @param  string $path
-	 * @return array
+	 * @param  string     $path
+	 * @param  \Clousure  $callback
+	 * @return void
 	 */
-	protected function parseFile($path)
+	protected function parseFile($path, $callback)
 	{
-		$content = $this->filesystem->get($path);
+		$handle = fopen($path, 'r');
 
-		$rows = array();
-
-		foreach (explode(PHP_EOL, $content) as $row) {
-			// ignore the comment lines in the file
-			if ($row === '' or strpos($row, '#') === 0) continue;
-
-			$rows[] = explode("\t", $row);
+		if ( ! $handle) {
+			throw new RuntimeException("Impossible to open file: $path");
 		}
 
-		return $rows;
+		// gets the lines and run the callback until we reach the end of file
+		while ( ! feof($handle)) {
+			$line = fgets($handle, 1024 * 32);
+
+			// ignore empty lines and comments
+			if ( ! $line or $line === '' or strpos($line, '#') === 0) continue;
+
+			// our CSV is <TAB> separated so we only need to conver it to an array
+			$line = explode("\t", $line);
+
+			// finally run our clousure with the line
+			$callback($line);
+		}
+
+		fclose($handle);
 	}
 
 }
