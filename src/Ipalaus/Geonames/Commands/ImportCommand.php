@@ -242,11 +242,23 @@ class ImportCommand extends Command {
 		$this->line("<info>Seeded:</info> $class");
 	}
 
+	/**
+	 * Create a process with the given command.
+	 *
+	 * @param  string  $command
+	 * @return \Symfony\Component\Process\Process
+	 */
 	protected function makeProcess($command)
 	{
 		return new Process($command, $this->laravel['path.base'], null, null, 600);
 	}
 
+	/**
+	 * Run a given process.
+	 *
+	 * @param  \Symfony\Component\Process\Process $process
+	 * @return \Symfony\Component\Process\Process
+	 */
 	public function runProcess(Process $process)
 	{
 		$process->run();
@@ -258,6 +270,11 @@ class ImportCommand extends Command {
 		return $process;
 	}
 
+	/**
+	 * Return the working path.
+	 *
+	 * @return string
+	 */
 	protected function getPath()
 	{
 		return $this->config['path'];
