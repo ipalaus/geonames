@@ -41,7 +41,18 @@ class DatabaseRepository implements RepositoryInterface {
 	 */
 	public function isEmpty($table)
 	{
-		return ($this->getTable($table)->count() === 0);
+		return ($this->count($table) === 0);
+	}
+
+	/**
+	 * Counts the elements in a table.
+	 *
+	 * @param  string  $table
+	 * @return integer
+	 */
+	public function count($table)
+	{
+		return $this->getTable($table)->count();
 	}
 
 	/**
