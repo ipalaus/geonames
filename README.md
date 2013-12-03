@@ -34,17 +34,17 @@ If you run now `php artisan` you should see a new namespace **geonames** with a 
 $ php artisan geonames:install
 ```
 
-This will publish the config file to `app/config/packages/ipalaus/geonames/config.php` and run the migrations for you. Ideally, the package should publish the migrations but we will wait until the current pull request laravel/framework#2649  gets merged.
+This will publish the config file to `app/config/packages/ipalaus/geonames/config.php` and run the migrations for you. Ideally, the package should publish the migrations but we will wait until the current pull request [laravel/framework#2649](https://github.com/laravel/framework/pull/2649)  gets merged.
 
 Artisan Commands
 ----------------
 
 ### Import
 
-The import command downloads the needed files (configurable in the config file) and run a seeder for each of it. A few options are provided:
+The import command downloads the needed files (configurable in the config file) and run a seeder for each of them. A few options are provided:
 
  - `--country=XX`: downloads the specific country (ie. US, ES, FR...)
- - `--development`: downloads a smaller names file (~10MB) very useful for development enviroments.
+ - `--development`: downloads a smaller names file (~10MB) very useful for development environments.
  - `--fetch-only`: only fetch the files but won't run the seeder. If you want to download the files and then be able to regenerate the tables while offline.
  - `--wipe-files`: forces a delete of the old files.
 
@@ -52,7 +52,7 @@ The import command downloads the needed files (configurable in the config file) 
 $ php artisan geonames:import [--country="..."] [--development] [--fetch-only] [--wipe-files]
 ```
 
-Importing a production database can take a while. Main file is ~1GB and the seeder has to insert ~6M rows while creating indexes for some fields. In development enviroments I highly recommend to use the `--development` option and keep complete imports to production. The final table sizes can also affect your local MySQL instance.
+Importing a production database can take a while. Main file is ~1GB and the seeder has to insert ~6M rows while creating indexes for some fields. In development environments, I highly recommend to use the `--development` option and keep complete imports to production. The final table sizes can also affect your local MySQL instance.
 
 ### Install
 
