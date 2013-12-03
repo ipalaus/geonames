@@ -153,9 +153,10 @@ class ImportCommand extends Command {
 		if ($development) {
 			$this->seedCommand('DevelopmentNamesTableSeeder');
 		} elseif ($country) {
-			$this->seedCommand('CountriesNamesTableSeeder', '--country=' . $country);
+			$this->seedCommand('CountryNamesTableSeeder', '--country=' . $country);
 		} else {
 			$this->seedCommand('NamesTableSeeder');
+			$this->seedCommand('AlternateNamesTableSeeder');
 			$this->seedCommand('LanguageCodesTableSeeder');
 		}
 	}
@@ -166,9 +167,9 @@ class ImportCommand extends Command {
 	 * @param  string  $class
 	 * @return void
 	 */
-	protected function seedCommand($class)
+	protected function seedCommand($class, $extra = '')
 	{
-		$string = 'php artisan geonames:seed --class="Ipalaus\Geonames\Seeders\%s" --path="%s"';
+		$string = 'php artisan geonames:seed --class="Ipalaus\Geonames\Seeders\%s" --path="%s" ' . $extra;
 
 		$command = sprintf($string, $class, $this->getPath());
 
@@ -208,7 +209,9 @@ class ImportCommand extends Command {
 			throw new RuntimeException('Country format must be in ISO Alpha 2 code.');
 		}
 
-		$this->files['names'] = sprintf($this->config['country_wildcard'], strtoupper($country));
+		$this->config['files']['names'] = sprintf($this->config['wildcard'], strtoupper($country));
+
+		unset($this->config['files']['alternate']);
 	}
 
 	/**
