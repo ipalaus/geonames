@@ -162,59 +162,6 @@ class ImportCommand extends Command {
 	}
 
 	/**
-	 * Run a seed coman in a separate process.
-	 *
-	 * @param  string  $class
-	 * @return void
-	 */
-	protected function seedCommand($class, $extra = '')
-	{
-		$string = 'php artisan geonames:seed --class="Ipalaus\Geonames\Seeders\%s" --path="%s" ' . $extra;
-
-		$command = sprintf($string, $class, $this->getPath());
-
-		$process = new Process($command, $this->laravel['path.base'], null, null, 600);
-		$process->run();
-
-		// executes after the command finishes
-		if (!$process->isSuccessful()) {
-			throw new \RuntimeException($process->getErrorOutput());
-		}
-
-		$this->line("<info>Seeded:</info> $class");
-	}
-
-	/**
-	 * Sets the names file for a ligher version for development. We also ignore
-	 * the alternate names.
-	 *
-	 * @return void
-	 */
-	protected function setDevelopment()
-	{
-		$this->config['files']['names'] = $this->config['development'];
-
-		unset($this->config['files']['alternate']);
-	}
-
-	/**
-	 * Sets the name file to a specific country.
-	 *
-	 * @param  string $country
-	 * @return void
-	 */
-	protected function setCountry($country)
-	{
-		if (strlen($country) > 2) {
-			throw new RuntimeException('Country format must be in ISO Alpha 2 code.');
-		}
-
-		$this->config['files']['names'] = sprintf($this->config['wildcard'], strtoupper($country));
-
-		unset($this->config['files']['alternate']);
-	}
-
-	/**
 	 * Download a file from a remote URL to a given path.
 	 *
 	 * @param  string  $url
@@ -276,6 +223,29 @@ class ImportCommand extends Command {
 		return false;
 	}
 
+	/**
+	 * Run a seed coman in a separate process.
+	 *
+	 * @param  string  $class
+	 * @return void
+	 */
+	protected function seedCommand($class, $extra = '')
+	{
+		$string = 'php artisan geonames:seed --class="Ipalaus\Geonames\Seeders\%s" --path="%s" ' . $extra;
+
+		$command = sprintf($string, $class, $this->getPath());
+
+		$process = new Process($command, $this->laravel['path.base'], null, null, 600);
+		$process->run();
+
+		// executes after the command finishes
+		if (!$process->isSuccessful()) {
+			throw new \RuntimeException($process->getErrorOutput());
+		}
+
+		$this->line("<info>Seeded:</info> $class");
+	}
+
 	protected function getPath()
 	{
 		return $this->config['path'];
@@ -289,6 +259,36 @@ class ImportCommand extends Command {
 	protected function getFiles()
 	{
 		return $this->config['files'];
+	}
+
+		/**
+	 * Sets the names file for a ligher version for development. We also ignore
+	 * the alternate names.
+	 *
+	 * @return void
+	 */
+	protected function setDevelopment()
+	{
+		$this->config['files']['names'] = $this->config['development'];
+
+		unset($this->config['files']['alternate']);
+	}
+
+	/**
+	 * Sets the name file to a specific country.
+	 *
+	 * @param  string $country
+	 * @return void
+	 */
+	protected function setCountry($country)
+	{
+		if (strlen($country) > 2) {
+			throw new RuntimeException('Country format must be in ISO Alpha 2 code.');
+		}
+
+		$this->config['files']['names'] = sprintf($this->config['wildcard'], strtoupper($country));
+
+		unset($this->config['files']['alternate']);
 	}
 
 	/**
