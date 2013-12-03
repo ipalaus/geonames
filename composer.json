@@ -24,8 +24,7 @@
     },
     "autoload": {
         "classmap": [
-            "src/migrations",
-            "src/seeders"
+            "src/migrations"
         ],
         "psr-0": {
             "Ipalaus\\Geonames\\": "src/"
