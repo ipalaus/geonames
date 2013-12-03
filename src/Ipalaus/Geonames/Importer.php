@@ -34,9 +34,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$me = $this;
+		$repository = $this->repository;
 
-		$this->parseFile($path, function($row) use ($table, $me)
+		$this->parseFile($path, function($row) use ($table, $repository)
 		{
 			$insert = array(
 				'id'              => $row[0],
@@ -60,7 +60,7 @@ class Importer {
 				'modification_at' => $row[18],
 			);
 
-			$me->repository->insert($table, $insert);
+			$repository->insert($table, $insert);
 		});
 	}
 
@@ -75,9 +75,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$me = $this;
+		$repository = $this->repository;
 
-		$this->parseFile($path, function($row) use ($table, $me)
+		$this->parseFile($path, function($row) use ($table, $repository)
 		{
 			$insert = array(
 				'iso_alpha2'           => $row[0],
@@ -101,7 +101,7 @@ class Importer {
 				'equivalent_fips_code' => $row[18],
 			);
 
-			$me->repository->insert($table, $insert);
+			$repository->insert($table, $insert);
 		});
 	}
 
@@ -138,9 +138,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$me = $this;
+		$repository = $this->repository;
 
-		$this->parseFile($path, function($row) use ($table, $me)
+		$this->parseFile($path, function($row) use ($table, $repository)
 		{
 			$insert = array(
 				'iso_639_3'     => $row[0],
@@ -149,7 +149,7 @@ class Importer {
 				'language_name' => $row[3],
 			);
 
-			$me->repository->insert($table, $insert);
+			$repository->insert($table, $insert);
 		});
 	}
 
@@ -165,9 +165,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$me = $this;
+		$repository = $this->repository;
 
-		$this->parseFile($path, function($row) use ($table, $me)
+		$this->parseFile($path, function($row) use ($table, $repository)
 		{
 			$insert = array(
 				'code'       => $row[0],
@@ -176,7 +176,7 @@ class Importer {
 				'name_id'    => $row[3],
 			);
 
-			$me->repository->insert($table, $insert);
+			$repository->insert($table, $insert);
 		});
 	}
 
@@ -191,9 +191,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$me = $this;
+		$repository = $this->repository;
 
-		$this->parseFile($path, function($row) use ($table, $me)
+		$this->parseFile($path, function($row) use ($table, $repository)
 		{
 			$insert = array(
 				'parent_id' => $row[0],
@@ -201,7 +201,7 @@ class Importer {
 				'type'      => $row[2],
 			);
 
-			$me->repository->insert($table, $insert);
+			$repository->insert($table, $insert);
 		});
 	}
 
@@ -216,9 +216,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$me = $this;
+		$repository = $this->repository;
 
-		$this->parseFile($path, function($row) use ($table, $me)
+		$this->parseFile($path, function($row) use ($table, $repository)
 		{
 			$insert = array(
 				'code'        => $row[0],
@@ -226,7 +226,7 @@ class Importer {
 				'description' => $row[2],
 			);
 
-			$me->repository->insert($table, $insert);
+			$repository->insert($table, $insert);
 		});
 	}
 
@@ -241,9 +241,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$me = $this;
+		$repository = $this->repository;
 
-		$this->parseFile($path, function($row) use ($table, $me)
+		$this->parseFile($path, function($row) use ($table, $repository)
 		{
 			$insert = array(
 				'id'         => $row[0],
@@ -251,7 +251,7 @@ class Importer {
 				'dst_offset' => $row[2],
 			);
 
-			$me->repository->insert($table, $insert);
+			$repository->insert($table, $insert);
 		});
 	}
 
@@ -266,9 +266,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$me = $this;
+		$repository = $this->repository;
 
-		$this->parseFile($path, function($row) use ($table, $me)
+		$this->parseFile($path, function($row) use ($table, $repository)
 		{
 			$insert = array(
 				'id'             => $row[1],
@@ -281,7 +281,7 @@ class Importer {
 				'is_historic'    => $row[8],
 			);
 
-			$me->repository->insert($table, $insert);
+			$repository->insert($table, $insert);
 		});
 	}
 
