@@ -235,15 +235,27 @@ class ImportCommand extends Command {
 
 		$command = sprintf($string, $class, $this->getPath());
 
-		$process = new Process($command, $this->laravel['path.base'], null, null, 600);
+		$process = $this->makeProcess($command);
+
+		$this->runProcess($process);
+
+		$this->line("<info>Seeded:</info> $class");
+	}
+
+	protected function makeProcess($command)
+	{
+		return new Process($command, $this->laravel['path.base'], null, null, 600);
+	}
+
+	public function runProcess(Process $process)
+	{
 		$process->run();
 
-		// executes after the command finishes
-		if (!$process->isSuccessful()) {
+		if ( ! $process->isSuccessful()) {
 			throw new \RuntimeException($process->getErrorOutput());
 		}
 
-		$this->line("<info>Seeded:</info> $class");
+		return $process;
 	}
 
 	protected function getPath()
@@ -256,7 +268,7 @@ class ImportCommand extends Command {
 	 *
 	 * @return array
 	 */
-	protected function getFiles()
+	public function getFiles()
 	{
 		return $this->config['files'];
 	}
