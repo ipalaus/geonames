@@ -88,7 +88,7 @@ class Importer {
 				'capital'              => $row[5],
 				'area'                 => $row[6],
 				'population'           => $row[7],
-				'continent'            => $row[8],
+				'continent_id'         => $row[8],
 				'tld'                  => $row[9],
 				'currency'             => $row[10],
 				'currency_name'        => $row[11],

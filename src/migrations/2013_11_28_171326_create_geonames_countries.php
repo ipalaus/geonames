@@ -22,7 +22,7 @@ class CreateGeonamesCountries extends Migration {
 			$table->string('capital', 200);
 			$table->double('area');
 			$table->integer('population');
-			$table->string('continent', 2)->index();
+			$table->string('continent_id', 2)->index();
 			$table->string('tld', 3);
 			$table->string('currency', 3);
 			$table->string('currency_name', 20);
