@@ -123,7 +123,7 @@ class Importer {
 				'name_id' => $row[2],
 			);
 
-			$me->repository->insert($table, $insert);
+			$this->repository->insert($table, $insert);
 		}
 	}
 
