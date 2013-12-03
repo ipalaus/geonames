@@ -34,7 +34,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$this->parseFile($path, function($row) use ($table)
+		$me = $this;
+
+		$this->parseFile($path, function($row) use ($table, $me)
 		{
 			$insert = array(
 				'id'              => $row[0],
@@ -73,7 +75,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$this->parseFile($path, function($row) use ($table)
+		$me = $this;
+
+		$this->parseFile($path, function($row) use ($table, $me)
 		{
 			$insert = array(
 				'iso_alpha2'           => $row[0],
@@ -134,7 +138,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$this->parseFile($path, function($row) use ($table)
+		$me = $this;
+
+		$this->parseFile($path, function($row) use ($table, $me)
 		{
 			$insert = array(
 				'iso_639_3'     => $row[0],
@@ -159,7 +165,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$this->parseFile($path, function($row) use ($table)
+		$me = $this;
+
+		$this->parseFile($path, function($row) use ($table, $me)
 		{
 			$insert = array(
 				'code'       => $row[0],
@@ -183,7 +191,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$this->parseFile($path, function($row) use ($table)
+		$me = $this;
+
+		$this->parseFile($path, function($row) use ($table, $me)
 		{
 			$insert = array(
 				'parent_id' => $row[0],
@@ -206,7 +216,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$this->parseFile($path, function($row) use ($table)
+		$me = $this;
+
+		$this->parseFile($path, function($row) use ($table, $me)
 		{
 			$insert = array(
 				'code'        => $row[0],
@@ -229,7 +241,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$this->parseFile($path, function($row) use ($table)
+		$me = $this;
+
+		$this->parseFile($path, function($row) use ($table, $me)
 		{
 			$insert = array(
 				'id'         => $row[0],
@@ -252,7 +266,9 @@ class Importer {
 	{
 		$this->isEmpty($table);
 
-		$this->parseFile($path, function($row) use ($table)
+		$me = $this;
+
+		$this->parseFile($path, function($row) use ($table, $me)
 		{
 			$insert = array(
 				'id'             => $row[1],
