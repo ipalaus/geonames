@@ -14,7 +14,7 @@ Add `ipalaus/geonames` as a requirement to composer.json:
 ```javascript
 {
     "require": {
-        "ipalaus/geonames": "dev-master"
+        "ipalaus/geonames": "0.1"
     }
 }
 ```
@@ -82,7 +82,7 @@ Eloquent Models
 ### Continent
 
 - Relationships:
- - hasMany `countries` 
+ - hasMany `countries`
 
 ### Country
 
