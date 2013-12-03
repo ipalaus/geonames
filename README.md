@@ -56,7 +56,7 @@ Importing a production database can take a while. Main file is ~1GB and the seed
 
 ### Install
 
-Publish the package's config and run the needed migrations. You can force the config publishing with the `--focre` option.
+Publish the package's config and run the needed migrations. You can force the config publishing with the `--force` option.
 
 ```bash
 $ php artisan geonames:install [-f|--force]
@@ -79,14 +79,61 @@ $ php artisan geonames:truncate
 Eloquent Models
 ---------------
 
-### Name
+### Continent
+
+- Relationships:
+ - hasMany `countries` 
 
 ### Country
 
-### Timezone
+- Relationships:
+ - belongsTo `continent`
+ - hasMany `names`
+
+### Name
+
+- Relationships:
+ - belongsTo `country`, eager loaded on every request
+
+... and more to come up!
 
 Integrating to a current Eloquent model
 ---------------------------------------
+
+Integrating `ipalaus/geonames` with your existing Eloquent models as easy as:
+
+```php
+<?php
+
+class User extends Eloquent {
+
+	public function geoname()
+	{
+		return $this->belongsTo('Ipalaus\Geonames\Eloquent\Name');
+	}
+
+}
+```
+
+Now you can a `geoname_id` to your `User` model and getting the results with a simple:
+
+```php
+$user = User::with('geoname')->find(1);
+echo $user->geoname->name;
+```
+
+The belongsTo `country` relationship in the `Name` model is always eager loaded. That means that you can get the country name with the same code as above. You just have to echo:
+
+```php
+echo $user->geoname->country->name;
+```
+
+You can go a step further and eager loaded the `geoname.country.continent` relationship (or whatever existing relation in Geoname models):
+
+```php
+$user = User::with('geoname.country.continent')->find(1);
+echo $user->geoname->country->continent->name;
+```
 
 GeoNames
 --------
