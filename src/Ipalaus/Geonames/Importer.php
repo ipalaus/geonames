@@ -60,7 +60,7 @@ class Importer {
 				'modification_at' => $row[18],
 			);
 
-			$this->repository->insert($table, $insert);
+			$me->repository->insert($table, $insert);
 		});
 	}
 
@@ -101,7 +101,7 @@ class Importer {
 				'equivalent_fips_code' => $row[18],
 			);
 
-			$this->repository->insert($table, $insert);
+			$me->repository->insert($table, $insert);
 		});
 	}
 
@@ -123,7 +123,7 @@ class Importer {
 				'name_id' => $row[2],
 			);
 
-			$this->repository->insert($table, $insert);
+			$me->repository->insert($table, $insert);
 		}
 	}
 
@@ -149,7 +149,7 @@ class Importer {
 				'language_name' => $row[3],
 			);
 
-			$this->repository->insert($table, $insert);
+			$me->repository->insert($table, $insert);
 		});
 	}
 
@@ -176,7 +176,7 @@ class Importer {
 				'name_id'    => $row[3],
 			);
 
-			$this->repository->insert($table, $insert);
+			$me->repository->insert($table, $insert);
 		});
 	}
 
@@ -201,7 +201,7 @@ class Importer {
 				'type'      => $row[2],
 			);
 
-			$this->repository->insert($table, $insert);
+			$me->repository->insert($table, $insert);
 		});
 	}
 
@@ -226,7 +226,7 @@ class Importer {
 				'description' => $row[2],
 			);
 
-			$this->repository->insert($table, $insert);
+			$me->repository->insert($table, $insert);
 		});
 	}
 
@@ -251,7 +251,7 @@ class Importer {
 				'dst_offset' => $row[2],
 			);
 
-			$this->repository->insert($table, $insert);
+			$me->repository->insert($table, $insert);
 		});
 	}
 
@@ -281,7 +281,7 @@ class Importer {
 				'is_historic'    => $row[8],
 			);
 
-			$this->repository->insert($table, $insert);
+			$me->repository->insert($table, $insert);
 		});
 	}
 
