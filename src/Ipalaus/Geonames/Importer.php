@@ -2,7 +2,6 @@
 
 use Clousure;
 use RuntimeException;
-use Illuminate\Filesystem\Filesystem;
 
 class Importer {
 
@@ -14,23 +13,14 @@ class Importer {
 	protected $repository;
 
 	/**
-	 * Filesystem implementation.
-	 *
-	 * @var \Illuminate\Filesystem\Filesystem
-	 */
-	protected $filesystem;
-
-	/**
 	 * Create a new instance of Importer.
 	 *
 	 * @param  \Ipalaus\Geonames\RepositoryInterface  $repository
-	 * @param  \Illuminate\Filesystem\Filesystem              $filesystem
 	 * @return void
 	 */
-	public function __construct(RepositoryInterface $repository, Filesystem $filesystem)
+	public function __construct(RepositoryInterface $repository)
 	{
 		$this->repository = $repository;
-		$this->filesystem = $filesystem;
 	}
 
 	/**

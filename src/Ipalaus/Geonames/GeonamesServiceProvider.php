@@ -74,7 +74,7 @@ class GeonamesServiceProvider extends ServiceProvider {
 		{
 			$config = $app['config']->get('geonames::import', array());
 
-			return new Commands\ImportCommand(new Importer($app['geonames.repository'], $app['files']), $app['files'], $config);
+			return new Commands\ImportCommand(new Importer($app['geonames.repository']), $app['files'], $config);
 		});
 
 		$app['command.geonames.seed'] = $app->share(function($app)

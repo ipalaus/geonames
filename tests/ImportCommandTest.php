@@ -11,7 +11,7 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testDevelopmentAndCountryCantBeBothOptions()
 	{
-		$command = new ImportCommandTestStub(new Importer($this->getRepo(), $filesystem = $this->getFiles()), $filesystem, array());
+		$command = new ImportCommandTestStub(new Importer($this->getRepo()), $this->getFiles(), array());
 		$this->runCommand($command, array('--development' => true, '--country' => 'IP'));
 	}
 
@@ -20,7 +20,7 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testMustProvideAValidIsoAlpha2Country()
 	{
-		$command = new ImportCommandTestStub(new Importer($this->getRepo(), $filesystem = $this->getFiles()), $filesystem, array());
+		$command = new ImportCommandTestStub(new Importer($this->getRepo()), $this->getFiles(), array());
 		$this->runCommand($command, array('--country' => 'Isern'));
 	}
 
@@ -32,7 +32,7 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 		$process->shouldReceive('isSuccessful')->once()->andReturn(true);
 		$process->shouldReceive('stop')->once();
 
-		$command = new ImportCommandTestStub(new Importer($this->getRepo(), $filesystem = $this->getFiles()), $filesystem, array());
+		$command = new ImportCommandTestStub(new Importer($this->getRepo()), $this->getFiles(), array());
 
 		$method = $this->getMethod('runProcess');
 		$return = $method->invokeArgs($command, array($process));
@@ -49,7 +49,7 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 		$process->shouldReceive('getErrorOutput')->once();
 		$process->shouldReceive('stop')->once();
 
-		$command = new ImportCommandTestStub(new Importer($this->getRepo(), $filesystem = $this->getFiles()), $filesystem, array());
+		$command = new ImportCommandTestStub(new Importer($this->getRepo()), $this->getFiles(), array());
 
 		$method = $this->getMethod('runProcess');
 		$return = $method->invokeArgs($command, array($process));
@@ -64,7 +64,7 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 		$repo->shouldReceive('isEmpty')->once()->andReturn(true);
 		$repo->shouldReceive('insert')->andReturn(null);
 
-		$importer = new Importer($repo, $filesystem);
+		$importer = new Importer($repo);
 
 		$config = array(
 			'path'  => __DIR__,
@@ -100,7 +100,7 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 		$repo->shouldReceive('isEmpty')->once()->andReturn(true);
 		$repo->shouldReceive('insert')->andReturn(null);
 
-		$importer = new Importer($repo, $filesystem);
+		$importer = new Importer($repo);
 
 		$config = array(
 			'path'  => __DIR__,
@@ -133,7 +133,7 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 		$repo->shouldReceive('isEmpty')->once()->andReturn(true);
 		$repo->shouldReceive('insert')->andReturn(null);
 
-		$importer = new Importer($repo, $filesystem);
+		$importer = new Importer($repo);
 
 		$config = array(
 			'path'  => __DIR__,
@@ -168,7 +168,7 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 		$repo->shouldReceive('isEmpty')->once()->andReturn(true);
 		$repo->shouldReceive('insert')->andReturn(null);
 
-		$importer = new Importer($repo, $filesystem);
+		$importer = new Importer($repo);
 
 		$config = array(
 			'path'  => __DIR__,
@@ -205,7 +205,7 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 		$repo->shouldReceive('isEmpty')->once()->andReturn(true);
 		$repo->shouldReceive('insert')->andReturn(null);
 
-		$importer = new Importer($repo, $filesystem);
+		$importer = new Importer($repo);
 
 		$config = array(
 			'path'  => __DIR__,
@@ -246,7 +246,7 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 
 		$filesystem = new Illuminate\Filesystem\Filesystem;
 
-		$command = new ImportCommandTestStub(new Importer($this->getRepo(), $filesystem), $filesystem, array());
+		$command = new ImportCommandTestStub(new Importer($this->getRepo()), $filesystem, array());
 
 		$method = $this->getMethod('extractZip');
 		$return = $method->invokeArgs($command, array(__DIR__, 'zipped.zip'));
@@ -265,7 +265,7 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 	{
 		$filesystem = new Illuminate\Filesystem\Filesystem;
 
-		$command = new ImportCommandTestStub(new Importer($this->getRepo(), $filesystem), $filesystem, array());
+		$command = new ImportCommandTestStub(new Importer($this->getRepo()), $filesystem, array());
 
 		$method = $this->getMethod('extractZip');
 		$method->invokeArgs($command, array(__DIR__, 'fake.zip'));
@@ -276,7 +276,7 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 		$file = __DIR__ . '/exists.txt';
 		file_put_contents($file, 'Isern Palaus');
 
-		$command = new ImportCommandTestStub(new Importer($this->getRepo(), $filesystem = $this->getFiles()), $filesystem, array());
+		$command = new ImportCommandTestStub(new Importer($this->getRepo()), $this->getFiles(), array());
 
 		$method = $this->getMethod('fileExists');
 		$return = $method->invokeArgs($command, array(__DIR__, 'exists.txt'));
