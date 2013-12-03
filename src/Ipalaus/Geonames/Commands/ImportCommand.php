@@ -331,7 +331,6 @@ class ImportCommand extends Command {
 			array('country', null, InputOption::VALUE_REQUIRED, 'Downloads just the specific country.'),
 			array('development', null, InputOption::VALUE_NONE, 'Downloads an smaller version of names (~10MB).'),
 			array('fetch-only', null, InputOption::VALUE_NONE, 'Just download the files.'),
-			array('force', 'f', InputOption::VALUE_NONE, 'Forces overwriting the downloaded files.'),
 			array('wipe-files', null, InputOption::VALUE_NONE, 'Wipe old downloaded files and fetch new ones.'),
 		);
 	}
