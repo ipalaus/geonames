@@ -11,7 +11,7 @@ class LanguageCodesTableSeeder extends DatabaseSeeder {
 	{
 		$path = $this->command->option('path');
 
-		$this->importer->names('geonames_language_codes', $path . '/iso-languagecodes.txt');
+		$this->importer->languageCodes('geonames_language_codes', $path . '/iso-languagecodes.txt');
 	}
 
 }
