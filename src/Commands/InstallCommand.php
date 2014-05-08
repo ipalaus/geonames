@@ -39,12 +39,7 @@ class InstallCommand extends Command {
 		}
 
 		$this->call('config:publish', array('package' => 'ipalaus/geonames'));
-
-		// The ideal idea here is to publish the migrations. A 'migrate:publish'
-		// doesn't exists right now but a feature request was accepted and a
-		// pull request was already opened. So, for now, we will just migrate.
-		// Further info: https://github.com/laravel/framework/pull/2649
-		$this->call('migrate', array('--package' => 'ipalaus/geonames'));
+		$this->call('migrate:publish', array('package' => 'ipalaus/geonames'));
 	}
 
 	/**

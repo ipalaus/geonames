@@ -34,7 +34,7 @@ If you run now `php artisan` you should see a new namespace **geonames** with a 
 $ php artisan geonames:install
 ```
 
-This will publish the config file to `app/config/packages/ipalaus/geonames/config.php` and run the migrations for you. Ideally, the package should publish the migrations but we will wait until the current pull request [laravel/framework#2649](https://github.com/laravel/framework/pull/2649)  gets merged.
+This will publish the config file to `app/config/packages/ipalaus/geonames/config.php` and the migrations to your `app/database/migrations` directory. To be able to control what's going on, we recommend you to manually trigger `php artisan migrate`.
 
 Artisan Commands
 ----------------
