@@ -246,9 +246,11 @@ class Importer {
 		$this->parseFile($path, function($row) use ($table, $repository)
 		{
 			$insert = array(
-				'id'         => $row[0],
-				'gmt_offset' => $row[1],
-				'dst_offset' => $row[2],
+				'country_code' => $row[0],
+				'id'           => $row[1],
+				'gmt_offset'   => $row[2],
+				'dst_offset'   => $row[3],
+				'raw_offset'   => $row[4]
 			);
 
 			$repository->insert($table, $insert);
