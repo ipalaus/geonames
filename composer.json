@@ -1,7 +1,12 @@
 {
     "name": "ipalaus/geonames",
-    "description": "A collection of Eloquent models and Commands to get all the power of GeoNames in Laravel 4.",
-    "keywords": ["geonames", "location", "eloquent", "laravel"],
+    "description": "A collection of models and commands to get all the power of GeoNames in Eloquent ORM.",
+    "keywords": [
+        "geonames",
+        "location",
+        "eloquent",
+        "laravel"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -27,7 +32,7 @@
         "classmap": [
             "src/migrations"
         ],
-        "psr-0": {
+        "psr-4": {
             "Ipalaus\\Geonames\\": "src/"
         }
     },
