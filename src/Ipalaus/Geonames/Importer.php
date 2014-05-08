@@ -271,14 +271,14 @@ class Importer {
 		$this->parseFile($path, function($row) use ($table, $repository)
 		{
 			$insert = array(
-				'id'             => $row[1],
-				'name_id'        => $row[2],
-				'iso_language'   => $row[3],
-				'alternate_name' => $row[4],
-				'is_preferred'   => $row[5],
-				'is_short'       => $row[6],
-				'is_colloquial'  => $row[7],
-				'is_historic'    => $row[8],
+				'id'             => $row[0],
+				'name_id'        => $row[1],
+				'iso_language'   => $row[2],
+				'alternate_name' => $row[3],
+				'is_preferred'   => $row[4],
+				'is_short'       => $row[5],
+				'is_colloquial'  => $row[6],
+				'is_historic'    => $row[7],
 			);
 
 			$repository->insert($table, $insert);
