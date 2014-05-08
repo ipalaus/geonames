@@ -155,9 +155,9 @@ class ImportCommand extends Command {
 		} elseif ($country) {
 			$this->seedCommand('CountryNamesTableSeeder', '--country=' . $country);
 		} else {
-			$this->seedCommand('NamesTableSeeder');
 			$this->seedCommand('AlternateNamesTableSeeder');
 			$this->seedCommand('LanguageCodesTableSeeder');
+			$this->seedCommand('NamesTableSeeder');
 		}
 	}
 

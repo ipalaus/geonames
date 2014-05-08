@@ -1,6 +1,6 @@
 <?php namespace Ipalaus\Geonames\Seeders;
 
-class LanguageCodesTableSeeder extends DatabaseSeeder {
+class AlternateNamesTableSeeder extends DatabaseSeeder {
 
 	/**
 	 * Run the database seeds.
@@ -11,7 +11,7 @@ class LanguageCodesTableSeeder extends DatabaseSeeder {
 	{
 		$path = $this->command->option('path');
 
-		$this->importer->languageCodes('geonames_language_codes', $path . '/iso-languagecodes.txt');
+		$this->importer->alternateNames('geonames_alternate_names', $path . '/alternateNames.txt');
 	}
 
 }
