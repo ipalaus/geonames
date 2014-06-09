@@ -280,10 +280,10 @@ class Importer {
 				'name_id'        => $row[1],
 				'iso_language'   => $row[2],
 				'alternate_name' => $row[3],
-				'is_preferred'   => $row[4],
-				'is_short'       => $row[5],
-				'is_colloquial'  => $row[6],
-				'is_historic'    => $row[7],
+				'is_preferred'   => $row[4]? 1:0,
+				'is_short'       => $row[5]? 1:0,
+				'is_colloquial'  => $row[6]? 1:0,
+				'is_historic'    => $row[7]? 1:0,
 			);
 
 			$repository->insert($table, $insert);
