@@ -245,6 +245,9 @@ class Importer {
 
 		$this->parseFile($path, function($row) use ($table, $repository)
 		{
+			if ($row[0] == 'CountryCode') // skip header row
+				return;
+
 			$insert = array(
 				'country_code' => $row[0],
 				'id'           => $row[1],
