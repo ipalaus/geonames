@@ -86,7 +86,7 @@ class Importer {
 				'fips_code'            => $row[3],
 				'name'                 => $row[4],
 				'capital'              => $row[5],
-				'area'                 => $row[6],
+				'area'                 => $row[6]? $row[6]:null,
 				'population'           => $row[7],
 				'continent_id'         => $row[8],
 				'tld'                  => $row[9],
