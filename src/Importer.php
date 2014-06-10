@@ -54,7 +54,7 @@ class Importer {
 				'admin3'          => $row[12],
 				'admin4'          => $row[13],
 				'population'      => $row[14],
-				'elevation'       => $row[15],
+				'elevation'       => $row[15]? $row[15]:null,
 				'gtopo30'         => $row[16],
 				'timezone_id'     => $row[17],
 				'modification_at' => $row[18],
