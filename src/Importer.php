@@ -142,6 +142,9 @@ class Importer {
 
 		$this->parseFile($path, function($row) use ($table, $repository)
 		{
+			if ($row[0] == 'ISO 639-3') // skip header row
+				return;
+
 			$insert = array(
 				'iso_639_3'     => $row[0],
 				'iso_639_2'     => $row[1],
