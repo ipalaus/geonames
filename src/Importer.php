@@ -95,8 +95,8 @@ class Importer {
 				'phone'                => $row[12],
 				'postal_code_format'   => $row[13],
 				'postal_code_regex'    => $row[14],
-				'name_id'              => $row[15],
-				'languages'            => $row[16],
+				'languages'            => $row[15],
+				'name_id'              => $row[16]? $row[16]:null,
 				'neighbours'           => $row[17],
 				'equivalent_fips_code' => $row[18],
 			);
