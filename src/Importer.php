@@ -54,7 +54,7 @@ class Importer {
 				'admin3'          => $row[12],
 				'admin4'          => $row[13],
 				'population'      => $row[14],
-				'elevation'       => $row[15],
+				'elevation'       => $row[15]? $row[15]:null,
 				'gtopo30'         => $row[16],
 				'timezone_id'     => $row[17],
 				'modification_at' => $row[18],
@@ -86,7 +86,7 @@ class Importer {
 				'fips_code'            => $row[3],
 				'name'                 => $row[4],
 				'capital'              => $row[5],
-				'area'                 => $row[6],
+				'area'                 => $row[6]? $row[6]:null,
 				'population'           => $row[7],
 				'continent_id'         => $row[8],
 				'tld'                  => $row[9],
@@ -95,8 +95,8 @@ class Importer {
 				'phone'                => $row[12],
 				'postal_code_format'   => $row[13],
 				'postal_code_regex'    => $row[14],
-				'name_id'              => $row[15],
-				'languages'            => $row[16],
+				'languages'            => $row[15],
+				'name_id'              => $row[16]? $row[16]:null,
 				'neighbours'           => $row[17],
 				'equivalent_fips_code' => $row[18],
 			);
@@ -142,6 +142,9 @@ class Importer {
 
 		$this->parseFile($path, function($row) use ($table, $repository)
 		{
+			if ($row[0] == 'ISO 639-3') // skip header row
+				return;
+
 			$insert = array(
 				'iso_639_3'     => $row[0],
 				'iso_639_2'     => $row[1],
@@ -280,10 +283,10 @@ class Importer {
 				'name_id'        => $row[1],
 				'iso_language'   => $row[2],
 				'alternate_name' => $row[3],
-				'is_preferred'   => $row[4],
-				'is_short'       => $row[5],
-				'is_colloquial'  => $row[6],
-				'is_historic'    => $row[7],
+				'is_preferred'   => $row[4]? 1:0,
+				'is_short'       => $row[5]? 1:0,
+				'is_colloquial'  => $row[6]? 1:0,
+				'is_historic'    => $row[7]? 1:0,
 			);
 
 			$repository->insert($table, $insert);
