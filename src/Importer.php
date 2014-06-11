@@ -2,6 +2,7 @@
 
 use Clousure;
 use RuntimeException;
+use DB;
 
 class Importer {
 
@@ -35,6 +36,7 @@ class Importer {
 		$this->isEmpty($table);
 
 		$repository = $this->repository;
+		DB::statement("SET NAMES 'utf8mb4'");
 
 		$this->parseFile($path, function($row) use ($table, $repository)
 		{
@@ -275,6 +277,7 @@ class Importer {
 		$this->isEmpty($table);
 
 		$repository = $this->repository;
+		DB::statement("SET NAMES 'utf8mb4'");
 
 		$this->parseFile($path, function($row) use ($table, $repository)
 		{
