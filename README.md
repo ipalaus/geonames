@@ -14,7 +14,7 @@ Add `ipalaus/geonames` as a requirement to composer.json:
 ```javascript
 {
     "require": {
-        "ipalaus/geonames": "0.2.*"
+        "ipalaus/geonames": "1.0.*"
     }
 }
 ```
