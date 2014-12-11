@@ -22,7 +22,7 @@
         "illuminate/database": "4.2.*",
         "illuminate/filesystem": "4.2.*",
         "illuminate/support": "4.2.*",
-        "symfony/process": "2.4.*"
+        "symfony/process": "2.5.*"
     },
     "require-dev": {
         "mockery/mockery": "0.8.0",
