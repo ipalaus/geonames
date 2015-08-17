@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class GeonamesTimezonesNewColumns extends Migration {
+class GeonamesTimezonesNewColumnsTable extends Migration {
 
     /**
      * Run the migrations.

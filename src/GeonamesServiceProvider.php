@@ -18,7 +18,14 @@ class GeonamesServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('ipalaus/geonames');
+		$this->mergeConfigFrom(realpath(__DIR__ . '/config/config.php'), 'geonames');
+
+		$this->publishes([
+			realpath(__DIR__ . '/config/config.php') => $this->app->configPath() . '/geonames.php'
+		], 'config');
+		$this->publishes([
+			realpath(__DIR__ . '/migrations') => $this->app->databasePath() . '/migrations'
+		], 'migrations');
 	}
 
 	/**
@@ -28,8 +35,6 @@ class GeonamesServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['config']->package('ipalaus/geonames', __DIR__ . '/config');
-
 		$this->registerRepository();
 		$this->registerCommands();
 	}
@@ -72,7 +77,7 @@ class GeonamesServiceProvider extends ServiceProvider {
 
 		$app['command.geonames.import'] = $app->share(function($app)
 		{
-			$config = $app['config']->get('geonames::import', array());
+			$config = config('geonames.import', array());
 
 			return new Commands\ImportCommand(new Importer($app['geonames.repository']), $app['files'], $config);
 		});
@@ -101,3 +106,4 @@ class GeonamesServiceProvider extends ServiceProvider {
 	}
 
 }
+

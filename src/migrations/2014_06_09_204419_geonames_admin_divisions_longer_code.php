@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class GeonamesAdminDivisionsLongerCode extends Migration {
+class GeonamesAdminDivisionsLongerCodeTable extends Migration {
 
     /**
      * Run the migrations.

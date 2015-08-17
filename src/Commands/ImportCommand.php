@@ -104,7 +104,7 @@ class ImportCommand extends Command {
 
 		// create the directory if it doesn't exists
 		if ( ! $this->filesystem->isDirectory($path)) {
-			$this->filesystem->makeDirectory($path);
+			$this->filesystem->makeDirectory($path, 0755, true);
 		}
 
 		$files = $this->getFiles();
@@ -336,3 +336,4 @@ class ImportCommand extends Command {
 	}
 
 }
+
