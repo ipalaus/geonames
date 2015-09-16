@@ -11,7 +11,7 @@ class AdminSubdivionsTableSeeder extends DatabaseSeeder {
 	{
 		$path = $this->command->option('path');
 
-		$this->importer->adminDivions('geonames_admin_subdivisions', $path . '/admin1CodesASCII.txt');
+		$this->importer->adminDivions('geonames_admin_subdivisions', $path . '/admin2Codes.txt');
 	}
 
 }
