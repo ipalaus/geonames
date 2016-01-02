@@ -31,10 +31,10 @@ Once you have installed the dependency, you need to register `geonames` in Larav
 If you run now `php artisan` you should see a new namespace **geonames** with a few commands related to the package. In order to proceed with the install, run the next command:
 
 ```bash
-$ php artisan geonames:install
+$ php artisan vendor:publish --provider="Ipalaus\Geonames\GeonamesServiceProvider"
 ```
 
-This will publish the config file to `app/config/packages/ipalaus/geonames/config.php` and the migrations to your `app/database/migrations` directory. To be able to control what's going on, we recommend you to manually trigger `php artisan migrate`.
+This will publish the config file to `config/geonames.php` and the migrations to your `database/migrations` directory. To be able to control what's going on, we recommend you to manually trigger `php artisan migrate`.
 
 Artisan Commands
 ----------------

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGeonamesLanguageCodes extends Migration {
+class CreateGeonamesLanguageCodesTable extends Migration {
 
 	/**
 	 * Run the migrations.

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGeonamesAdminSubdivisions extends Migration {
+class CreateGeonamesAdminSubdivisionsTable extends Migration {
 
 	/**
 	 * Run the migrations.

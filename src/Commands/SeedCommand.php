@@ -2,7 +2,7 @@
 
 use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
-use Illuminate\Database\Console\SeedCommand as IlluminateSeedCommand;
+use Illuminate\Database\Console\Seeds\SeedCommand as IlluminateSeedCommand;
 
 class SeedCommand extends IlluminateSeedCommand {
 

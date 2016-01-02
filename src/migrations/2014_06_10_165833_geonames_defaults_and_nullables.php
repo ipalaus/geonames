@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class GeonamesDefaultsAndNullables extends Migration {
+class GeonamesDefaultsAndNullablesTable extends Migration {
 
     /**
      * Run the migrations.
