@@ -4,7 +4,7 @@ Eloquent Geonames
 [![Build Status](https://travis-ci.org/ipalaus/geonames.png?branch=master)](https://travis-ci.org/ipalaus/geonames)
 [![Coverage Status](https://coveralls.io/repos/ipalaus/geonames/badge.png?branch=master)](https://coveralls.io/r/ipalaus/geonames?branch=master)
 
-A collection of Eloquent models and Commands to get all the power of GeoNames in Laravel 5.1.
+A collection of Eloquent models and Commands to get all the power of GeoNames in Laravel.
 
 Installation
 ------------
@@ -14,10 +14,12 @@ Add `ipalaus/geonames` as a requirement to composer.json:
 ```javascript
 {
     "require": {
-        "ipalaus/geonames": "2.0.*"
+        "ipalaus/geonames": "3.0.*"
     }
 }
 ```
+
+*Note*: if you're using Laravel 5.1 you can use the version `2.0.*`.
 
 Update your packages with `composer update` or install with `composer install`.
 
