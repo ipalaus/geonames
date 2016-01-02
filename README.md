@@ -19,7 +19,7 @@ Add `ipalaus/geonames` as a requirement to composer.json:
 }
 ```
 
-**Note**: if you're using Laravel 5.1 you can use the version `"ipalaus/geonames": "3.0.*"`.
+**Note**: if you're using Laravel 5.1 you can use the version `"ipalaus/geonames": "2.0.*"`.
 
 Update your packages with `composer update` or install with `composer install`.
 
