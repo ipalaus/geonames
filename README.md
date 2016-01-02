@@ -4,7 +4,7 @@ Eloquent Geonames
 [![Build Status](https://travis-ci.org/ipalaus/geonames.png?branch=master)](https://travis-ci.org/ipalaus/geonames)
 [![Coverage Status](https://coveralls.io/repos/ipalaus/geonames/badge.png?branch=master)](https://coveralls.io/r/ipalaus/geonames?branch=master)
 
-A collection of Eloquent models and Commands to get all the power of GeoNames in Laravel 5.
+A collection of Eloquent models and Commands to get all the power of GeoNames in Laravel 5.1.
 
 Installation
 ------------
