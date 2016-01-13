@@ -23,4 +23,13 @@ class DatabaseSeeder extends Seeder {
 		$this->importer = $importer;
 	}
 
+        /**
+	 * Run the database seeds.
+	 *
+	 * @return void
+	 */
+	public function run()
+	{
+		
+	}
 }
