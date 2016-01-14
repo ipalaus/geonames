@@ -18,6 +18,13 @@ class Country extends Model {
 	 */
 	protected $primaryKey = 'iso_alpha2';
 
+	/**
+	* Indicates if the IDs are auto-incrementing.
+	*
+	* @var bool
+	*/
+	public $incrementing = false;
+	
 	/* -(  Relationships  )-------------------------------------------------- */
 
 	public function continent()
