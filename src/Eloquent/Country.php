@@ -5,6 +5,13 @@ use Illuminate\Database\Eloquent\Model;
 class Country extends Model {
 
 	/**
+	 * Indicates if the IDs are auto-incrementing.
+	 *
+	 * @var bool
+	 */
+	public $incrementing = false;
+
+	/**
 	 * The table associated with the model.
 	 *
 	 * @var string
