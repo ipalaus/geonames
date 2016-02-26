@@ -3,7 +3,7 @@
 use Ipalaus\Geonames\Importer;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder {
+abstract class DatabaseSeeder extends Seeder {
 
 	/**
 	 * The importer instance.
