@@ -1,6 +1,7 @@
 <?php
 
 use Mockery as m;
+use Illuminate\Foundation\Application;
 use Ipalaus\Geonames\Importer;
 use Ipalaus\Geonames\Commands\ImportCommand;
 
@@ -12,6 +13,10 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 	public function testDevelopmentAndCountryCantBeBothOptions()
 	{
 		$command = new ImportCommandTestStub(new Importer($this->getRepo()), $this->getFiles(), array());
+
+		$app = new Application();
+		$command->setLaravel($app);
+
 		$this->runCommand($command, array('--development' => true, '--country' => 'IP'));
 	}
 
@@ -21,6 +26,10 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 	public function testMustProvideAValidIsoAlpha2Country()
 	{
 		$command = new ImportCommandTestStub(new Importer($this->getRepo()), $this->getFiles(), array());
+
+		$app = new Application();
+		$command->setLaravel($app);
+
 		$this->runCommand($command, array('--country' => 'Isern'));
 	}
 
@@ -78,6 +87,9 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 
 		$command = $this->getMock('ImportCommandTestStub', $mockedMethods, array($importer, $filesystem, $config));
 
+		$app = new Application();
+		$command->setLaravel($app);
+
 		$filesystem->shouldReceive('isDirectory')->once()->andReturn(false);
 		$filesystem->shouldReceive('makeDirectory')->once()->andReturn(true);
 		$filesystem->shouldReceive('runProcess')->andReturn(null);
@@ -114,6 +126,9 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 
 		$command = $this->getMock('ImportCommandTestStub', $mockedMethods, array($importer, $filesystem, $config));
 
+		$app = new Application();
+		$command->setLaravel($app);
+
 		$filesystem->shouldReceive('isDirectory')->once()->andReturn(false);
 		$filesystem->shouldReceive('makeDirectory')->once()->andReturn(true);
 		$filesystem->shouldReceive('runProcess')->andReturn(null);
@@ -146,6 +161,9 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 		$mockedMethods = array('fileExists', 'downloadFile', 'extractZip', 'runProcess');
 
 		$command = $this->getMock('ImportCommandTestStub', $mockedMethods, array($importer, $filesystem, $config));
+
+		$app = new Application();
+		$command->setLaravel($app);
 
 		$filesystem->shouldReceive('isDirectory')->once()->andReturn(false);
 		$filesystem->shouldReceive('makeDirectory')->once()->andReturn(true);
@@ -183,6 +201,9 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 
 		$command = $this->getMock('ImportCommandTestStub', $mockedMethods, array($importer, $filesystem, $config));
 
+		$app = new Application();
+		$command->setLaravel($app);
+
 		$filesystem->shouldReceive('isDirectory')->once()->andReturn(false);
 		$filesystem->shouldReceive('makeDirectory')->once()->andReturn(true);
 		$filesystem->shouldReceive('runProcess')->andReturn(null);
@@ -219,6 +240,9 @@ class ImportCommandTest extends PHPUnit_Framework_TestCase {
 		$mockedMethods = array('fileExists', 'downloadFile', 'extractZip', 'runProcess');
 
 		$command = $this->getMock('ImportCommandTestStub', $mockedMethods, array($importer, $filesystem, $config));
+
+		$app = new Application();
+		$command->setLaravel($app);
 
 		$filesystem->shouldReceive('isDirectory')->once()->andReturn(false);
 		$filesystem->shouldReceive('makeDirectory')->once()->andReturn(true);
@@ -331,7 +355,7 @@ class ImportCommandTestStub extends ImportCommand
 		//
 	}
 
-	public function line($string)
+	public function line($string, $style = null, $verbosity = null)
 	{
 		//
 	}

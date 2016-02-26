@@ -1,6 +1,7 @@
 <?php
 
 use Mockery as m;
+use Illuminate\Foundation\Application;
 use Ipalaus\Geonames\Commands\TruncateCommand;
 
 class TruncateCommandTest extends PHPUnit_Framework_TestCase {
@@ -12,6 +13,10 @@ class TruncateCommandTest extends PHPUnit_Framework_TestCase {
 			->method('truncate');
 
 		$command = $this->getMock('TruncateCommandTestStub', array('confirmTruncate'), array($repo));
+
+		$app = new Application();
+		$command->setLaravel($app);
+
 		$command->expects($this->once())
 			->method('confirmTruncate')
 			->will($this->returnValue(true));
@@ -35,6 +40,10 @@ class TruncateCommandTest extends PHPUnit_Framework_TestCase {
 		$repo = $this->getMock('Ipalaus\Geonames\RepositoryInterface');
 
 		$command = $this->getMock('TruncateCommandTestStub', array('confirmTruncate'), array($repo));
+
+		$app = new Application();
+		$command->setLaravel($app);
+
 		$command->expects($this->once())
 				->method('confirmTruncate')
 				->will($this->returnValue(false));
@@ -58,7 +67,7 @@ class TruncateCommandTest extends PHPUnit_Framework_TestCase {
 
 class TruncateCommandTestStub extends TruncateCommand {
 
-	public function line($string)
+	public function line($string, $style = null, $verbosity = null)
 	{
 		//
 	}

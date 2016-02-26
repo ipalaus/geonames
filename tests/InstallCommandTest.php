@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Ipalaus\Geonames\Commands\InstallCommand;
 
 class InstallCommandTest extends PHPUnit_Framework_TestCase {
@@ -7,6 +8,9 @@ class InstallCommandTest extends PHPUnit_Framework_TestCase {
 	public function testCommandCall()
 	{
 		$command = new InstallCommandTestStub;
+
+		$app = new Application();
+		$command->setLaravel($app);
 
 		$this->runCommand($command);
 	}
@@ -17,6 +21,10 @@ class InstallCommandTest extends PHPUnit_Framework_TestCase {
 	public function testExistingConfigThrowsException()
 	{
 		$command = $this->getMock('InstallCommandTestStub', array('configExists'));
+
+		$app = new Application();
+		$command->setLaravel($app);
+
 		$command->expects($this->once())
 				->method('configExists')
 				->will($this->returnValue(true));
@@ -27,6 +35,10 @@ class InstallCommandTest extends PHPUnit_Framework_TestCase {
 	public function testForceEvenConfigExists()
 	{
 		$command = $this->getMock('InstallCommandTestStub', array('configExists'));
+
+		$app = new Application();
+		$command->setLaravel($app);
+
 		$command->expects($this->once())
 				->method('configExists')
 				->will($this->returnValue(true));

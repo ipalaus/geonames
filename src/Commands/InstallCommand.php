@@ -30,7 +30,7 @@ class InstallCommand extends Command {
 	{
 		$force = $this->input->getOption('force');
 
-		$path = $this->laravel['path.base'].'/app/config/packages/ipalaus/geonames/config.php';
+		$path = $this->laravel->basePath().'/app/config/packages/ipalaus/geonames/config.php';
 
 		// prevents config overwrites
 		if ($this->configExists($path) and ! $force)

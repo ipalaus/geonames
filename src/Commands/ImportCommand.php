@@ -250,7 +250,7 @@ class ImportCommand extends Command {
 	 */
 	protected function makeProcess($command)
 	{
-		return new Process($command, $this->laravel['path.base'], null, null, 0);
+		return new Process($command, $this->laravel->basePath(), null, null, 0);
 	}
 
 	/**
