@@ -67,7 +67,7 @@ class TruncateCommandTest extends PHPUnit_Framework_TestCase {
 
 class TruncateCommandTestStub extends TruncateCommand {
 
-	public function line($string)
+	public function line($string, $style = null, $verbosity = null)
 	{
 		//
 	}

@@ -355,7 +355,7 @@ class ImportCommandTestStub extends ImportCommand
 		//
 	}
 
-	public function line($string)
+	public function line($string, $style = null, $verbosity = null)
 	{
 		//
 	}
