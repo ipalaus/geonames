@@ -1,37 +1,37 @@
 {
-    "name": "ipalaus/geonames",
-    "description": "A collection of models and commands to get all the power of GeoNames in Eloquent ORM.",
-    "keywords": [
-        "geonames",
-        "location",
-        "eloquent",
-        "laravel"
-    ],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Isern Palaus",
-            "email": "ipalaus@ipalaus.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.5.9",
-        "ext-zip": "*",
-        "illuminate/config": ">=5.1.0",
-        "illuminate/console": ">=5.1.0",
-        "illuminate/database": ">=5.1.0",
-        "illuminate/filesystem": ">=5.1.0",
-        "illuminate/support": ">=5.1.0",
-        "symfony/process": "2.8.*|3.1.*"
-    },
-    "require-dev": {
-        "mockery/mockery": "~0.9.2",
-        "phpunit/phpunit": "~4.1"
-    },
-    "autoload": {
-        "psr-4": {
-            "Ipalaus\\Geonames\\": "src/"
-        }
-    },
-    "minimum-stability": "dev"
+  "name": "ipalaus/geonames",
+  "description": "A collection of models and commands to get all the power of GeoNames in Eloquent ORM.",
+  "keywords": [
+    "geonames",
+    "location",
+    "eloquent",
+    "laravel"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Isern Palaus",
+      "email": "ipalaus@ipalaus.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9",
+    "ext-zip": "*",
+    "illuminate/config": ">=5.4.0",
+    "illuminate/console": ">=5.4.0",
+    "illuminate/database": ">=5.4.0",
+    "illuminate/filesystem": ">=5.4.0",
+    "illuminate/support": ">=5.4.0",
+    "symfony/process": "3.2.*"
+  },
+  "require-dev": {
+    "mockery/mockery": "0.9.*",
+    "phpunit/phpunit": "~5.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ipalaus\\Geonames\\": "src/"
+    }
+  },
+  "minimum-stability": "dev"
 }
