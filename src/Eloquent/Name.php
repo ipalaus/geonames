@@ -22,7 +22,7 @@ class Name extends Model {
 
 	public function country()
 	{
-		return $this->belongsTo('Ipalaus\Geonames\Eloquent\Country');
+		return $this->belongsTo('Ipalaus\Geonames\Eloquent\Country', 'country_id', 'iso_alpha2');
 	}
 
 }
