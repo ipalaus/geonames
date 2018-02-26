@@ -17,12 +17,12 @@
   "require": {
     "php": ">=5.6.4",
     "ext-zip": "*",
-    "illuminate/config": "~5.5",
-    "illuminate/console": "~5.5",
-    "illuminate/database": "~5.5",
-    "illuminate/filesystem": "~5.5",
-    "illuminate/support": "~5.5",
-    "symfony/process": "~3.3"
+    "illuminate/config": "~5.6",
+    "illuminate/console": "~5.6",
+    "illuminate/database": "~5.6",
+    "illuminate/filesystem": "~5.6",
+    "illuminate/support": "~5.6",
+    "symfony/process": "~3.3|~4.0"
   },
   "require-dev": {
     "mockery/mockery": "0.9.*",
