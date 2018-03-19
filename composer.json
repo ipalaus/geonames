@@ -29,9 +29,6 @@
     "phpunit/phpunit": "~5.0"
   },
   "autoload": {
-    "classmap": [
-      "src/migrations"
-    ],
     "psr-4": {
       "Ipalaus\\Geonames\\": "src/"
     }

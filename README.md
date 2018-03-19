@@ -47,11 +47,12 @@ The import command downloads the needed files (configurable in the config file) 
 
  - `--country=XX`: downloads the specific country (ie. US, ES, FR...)
  - `--development`: downloads a smaller names file (~10MB) very useful for development environments.
+ - `--essentials`: only seed the names, countries and continents tables.
  - `--fetch-only`: only fetch the files but won't run the seeder. If you want to download the files and then be able to regenerate the tables while offline.
  - `--wipe-files`: forces a delete of the old files.
 
 ```bash
-$ php artisan geonames:import [--country="..."] [--development] [--fetch-only] [--wipe-files]
+$ php artisan geonames:import [--country="..."] [--development] [--essentials] [--fetch-only] [--wipe-files]
 ```
 
 Importing a production database can take a while. Main file is ~1GB and the seeder has to insert ~6M rows while creating indexes for some fields. In development environments, I highly recommend to use the `--development` option and keep complete imports to production. The final table sizes can also affect your local MySQL instance.

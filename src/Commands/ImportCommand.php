@@ -82,6 +82,7 @@ class ImportCommand extends Command {
 	{
 		$country     = $this->input->getOption('country');
 		$development = $this->input->getOption('development');
+                $essentials  = $this->input->getOption('essentials');
 		$fetchOnly   = $this->input->getOption('fetch-only');
 		$wipeFiles   = $this->input->getOption('wipe-files');
 
@@ -141,11 +142,15 @@ class ImportCommand extends Command {
 		// finally seed the common seeders
 		$this->seedCommand('ContinentsTableSeeder');
 		$this->seedCommand('CountriesTableSeeder');
-		$this->seedCommand('AdminDivionsTableSeeder');
-		$this->seedCommand('AdminSubdivionsTableSeeder');
-		$this->seedCommand('HierarchiesTableSeeder');
-		$this->seedCommand('FeaturesTableSeeder');
-		$this->seedCommand('TimezonesTableSeeder');
+                
+                if (! $essentials)
+                {
+                    $this->seedCommand('AdminDivionsTableSeeder');
+                    $this->seedCommand('AdminSubdivionsTableSeeder');
+                    $this->seedCommand('HierarchiesTableSeeder');
+                    $this->seedCommand('FeaturesTableSeeder');
+                    $this->seedCommand('TimezonesTableSeeder');
+                }
 
 		// depending if we run a country, development or plain names we will run
 		// different seeders. Note that the langauge codes file is only
@@ -330,6 +335,7 @@ class ImportCommand extends Command {
 		return array(
 			array('country', null, InputOption::VALUE_REQUIRED, 'Downloads just the specific country.'),
 			array('development', null, InputOption::VALUE_NONE, 'Downloads an smaller version of names (~10MB).'),
+			array('essentials', null, InputOption::VALUE_NONE, 'Only seed the names, countries and continents tables.'),
 			array('fetch-only', null, InputOption::VALUE_NONE, 'Just download the files.'),
 			array('wipe-files', null, InputOption::VALUE_NONE, 'Wipe old downloaded files and fetch new ones.'),
 		);
