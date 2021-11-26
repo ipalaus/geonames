@@ -1,3 +1,5 @@
+# THIS PACKAGE IS ABANDONED. PLEASE, USE AN ALTERNATIVE.
+
 Eloquent Geonames
 =================
 
